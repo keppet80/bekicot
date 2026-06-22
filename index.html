@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security System Project Plan - Access Control & CCTV</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; color: #333; }
+        .header { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 30px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .header p { font-size: 1.1em; opacity: 0.9; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: transform 0.2s; }
+        .stat-card:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+        .stat-card .icon { font-size: 2.5em; margin-bottom: 10px; }
+        .stat-card .number { font-size: 2.2em; font-weight: bold; color: #1e3c72; }
+        .stat-card .label { color: #666; font-size: 0.95em; margin-top: 5px; }
+        .progress-bar { width: 100%; height: 8px; background: #e0e0e0; border-radius: 4px; margin-top: 15px; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+        .progress-fill.completed { background: #4CAF50; }
+        .progress-fill.in-progress { background: #FF9800; }
+        .progress-fill.not-started { background: #9E9E9E; }
+        .progress-fill.delayed { background: #F44336; }
+        .tabs { display: flex; gap: 5px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 24px; border: none; background: white; border-radius: 8px; cursor: pointer; font-size: 0.95em; font-weight: 600; color: #555; transition: all 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .tab-btn:hover { background: #e3f2fd; color: #1e3c72; }
+        .tab-btn.active { background: #1e3c72; color: white; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .card { background: white; border-radius: 12px; padding: 25px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .card h2 { color: #1e3c72; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #e3f2fd; }
+        .filters { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+        .filters select, .filters input { padding: 10px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.9em; background: white; }
+        .filters select:focus, .filters input:focus { outline: none; border-color: #1e3c72; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+        th { background: #1e3c72; color: white; padding: 14px 10px; text-align: left; font-weight: 600; position: sticky; top: 0; }
+        td { padding: 12px 10px; border-bottom: 1px solid #eee; }
+        tr:hover { background: #f8f9fa; }
+        .status-badge { padding: 5px 12px; border-radius: 20px; font-size: 0.8em; font-weight: 600; display: inline-block; }
+        .status-not-started { background: #e0e0e0; color: #616161; }
+        .status-in-progress { background: #fff3e0; color: #e65100; }
+        .status-completed { background: #e8f5e9; color: #2e7d32; }
+        .status-delayed { background: #ffebee; color: #c62828; }
+        .status-select { padding: 5px 10px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.85em; cursor: pointer; }
+        .phase-header { background: #e3f2fd !important; font-weight: bold; color: #1e3c72; }
+        .phase-header td { border-bottom: 2px solid #1e3c72; }
+        .gantt-chart { overflow-x: auto; }
+        .gantt-row { display: flex; align-items: center; padding: 8px 0; border-bottom: 1px solid #eee; }
+        .gantt-label { width: 300px; font-size: 0.85em; padding-right: 15px; flex-shrink: 0; }
+        .gantt-timeline { flex: 1; position: relative; height: 30px; background: #f5f5f5; border-radius: 4px; }
+        .gantt-bar { position: absolute; height: 24px; top: 3px; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.75em; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
+        .gantt-bar:hover { opacity: 0.85; }
+        .gantt-bar.completed { background: #4CAF50; }
+        .gantt-bar.in-progress { background: #FF9800; }
+        .gantt-bar.not-started { background: #9E9E9E; }
+        .gantt-bar.delayed { background: #F44336; }
+        .risk-matrix { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; max-width: 600px; margin: 20px auto; }
+        .risk-cell { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: bold; font-size: 1.2em; color: white; }
+        .risk-low { background: #4CAF50; }
+        .risk-medium { background: #FF9800; }
+        .risk-high { background: #F44336; }
+        .risk-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f8f9fa; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid; }
+        .risk-item.high { border-left-color: #F44336; }
+        .risk-item.medium { border-left-color: #FF9800; }
+        .risk-item.low { border-left-color: #4CAF50; }
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9em; font-weight: 600; transition: all 0.3s; }
+        .btn-primary { background: #1e3c72; color: white; }
+        .btn-primary:hover { background: #2a5298; }
+        .btn-success { background: #4CAF50; color: white; }
+        .btn-success:hover { background: #45a049; }
+        .export-buttons { display: flex; gap: 10px; margin-bottom: 20px; }
+        .timeline-months { display: flex; justify-content: space-between; padding: 5px 0; font-size: 0.8em; color: #666; border-bottom: 1px solid #ddd; margin-bottom: 5px; }
+        .search-box { padding: 10px 15px; border: 1px solid #ddd; border-radius: 8px; width: 300px; font-size: 0.9em; }
+        .percentage-input { width: 60px; padding: 5px; border: 1px solid #ddd; border-radius: 4px; text-align: center; }
+        .date-input { padding: 5px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85em; }
+        .note-input { width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85em; }
+        @media print { .tabs, .filters, .export-buttons, .status-select, .percentage-input, .date-input, .note-input { display: none !important; } .tab-content { display: block !important; } body { background: white; } .card { box-shadow: none; border: 1px solid #ddd; } }
+        @media (max-width: 768px) { .header h1 { font-size: 1.8em; } .gantt-label { width: 150px; font-size: 0.75em; } .filters { flex-direction: column; } .search-box { width: 100%; } table { font-size: 0.8em; } th, td { padding: 8px 5px; } }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div class="header">
+        <h1>Security System Project Plan</h1>
+        <p>Access Control & CCTV Installation Project</p>
+    </div>
+    <div class="container">
+        <div class="dashboard">
+            <div class="stat-card">
+                <div class="icon">📋</div>
+                <div class="number" id="totalTasks">64</div>
+                <div class="label">Total Tasks</div>
+                <div class="progress-bar"><div class="progress-fill not-started" id="totalProgress" style="width: 0%"></div></div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">✅</div>
+                <div class="number" id="completedTasks">0</div>
+                <div class="label">Completed</div>
+                <div class="progress-bar"><div class="progress-fill completed" id="completedProgress" style="width: 0%"></div></div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">🔄</div>
+                <div class="number" id="inProgressTasks">0</div>
+                <div class="label">In Progress</div>
+                <div class="progress-bar"><div class="progress-fill in-progress" id="inProgressBar" style="width: 0%"></div></div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">⚠️</div>
+                <div class="number" id="delayedTasks">0</div>
+                <div class="label">Delayed</div>
+                <div class="progress-bar"><div class="progress-fill delayed" id="delayedBar" style="width: 0%"></div></div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">📅</div>
+                <div class="number" id="daysRemaining">--</div>
+                <div class="label">Days Remaining</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">💰</div>
+                <div class="number" id="budgetUsed">0%</div>
+                <div class="label">Budget Used</div>
+                <div class="progress-bar"><div class="progress-fill in-progress" id="budgetBar" style="width: 0%"></div></div>
+            </div>
+        </div>
+        <div class="export-buttons">
+            <button class="btn btn-success" onclick="exportToCSV()">📥 Export to CSV</button>
+            <button class="btn btn-primary" onclick="window.print()">🖨️ Print Report</button>
+            <button class="btn btn-primary" onclick="saveData()">💾 Save Data</button>
+            <button class="btn btn-primary" onclick="loadData()">📂 Load Data</button>
+            <button class="btn btn-primary" onclick="resetData()">🔄 Reset</button>
+        </div>
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('master')">📋 Master Plan</button>
+            <button class="tab-btn" onclick="showTab('gantt')">📊 Gantt Chart</button>
+            <button class="tab-btn" onclick="showTab('boq')">📦 BOQ & Specs</button>
+            <button class="tab-btn" onclick="showTab('risk')">⚠️ Risk Register</button>
+            <button class="tab-btn" onclick="showTab('testing')">🧪 Testing</button>
+            <button class="tab-btn" onclick="showTab('training')">🎓 Training</button>
+            <button class="tab-btn" onclick="showTab('maintenance')">🔧 Maintenance</button>
+        </div>
+        <div id="master" class="tab-content active">
+            <div class="card">
+                <h2>📋 Project Master Plan</h2>
+                <div class="filters">
+                    <input type="text" class="search-box" id="searchMaster" placeholder="🔍 Search tasks..." onkeyup="filterTable('masterTable', this.value)">
+                    <select id="filterPhase" onchange="filterPhase()">
+                        <option value="">All Phases</option>
+                        <option value="Inisiasi">Inisiasi</option>
+                        <option value="Perencanaan">Perencanaan</option>
+                        <option value="Procurement">Procurement</option>
+                        <option value="Instalasi">Instalasi</option>
+                        <option value="Konfigurasi">Konfigurasi</option>
+                        <option value="Testing">Testing</option>
+                        <option value="Training">Training</option>
+                        <option value="Penutupan">Penutupan</option>
+                    </select>
+                    <select id="filterStatus" onchange="filterStatus()">
+                        <option value="">All Status</option>
+                        <option value="Not Started">Not Started</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Delayed">Delayed</option>
+                    </select>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table id="masterTable">
+                        <thead>
+                            <tr><th>No</th><th>Fase</th><th>Task/Activity</th><th>Start Date</th><th>End Date</th><th>Durasi</th><th>Status</th><th>%</th><th>PIC</th><th>Deliverable</th><th>Notes</th></tr>
+                        </thead>
+                        <tbody id="masterBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="gantt" class="tab-content">
+            <div class="card">
+                <h2>📊 Gantt Chart Timeline</h2>
+                <div class="gantt-chart" id="ganttChart"></div>
+            </div>
+        </div>
+        <div id="boq" class="tab-content">
+            <div class="card">
+                <h2>📦 Bill of Quantity (BOQ) - CCTV System</h2>
+                <div class="filters">
+                    <input type="text" class="search-box" placeholder="🔍 Search devices..." onkeyup="filterTable('boqCCTV', this.value)">
+                </div>
+                <table id="boqCCTV">
+                    <thead>
+                        <tr><th>No</th><th>Kategori</th><th>Device/Item</th><th>Brand</th><th>Model</th><th>Qty</th><th>Unit</th><th>Price/unit</th><th>Total</th><th>Specification</th><th>Location</th></tr>
+                    </thead>
+                    <tbody id="boqCCTVBody"></tbody>
+                </table>
+            </div>
+            <div class="card">
+                <h2>📦 Bill of Quantity (BOQ) - Access Control</h2>
+                <table id="boqAccess">
+                    <thead>
+                        <tr><th>No</th><th>Kategori</th><th>Device/Item</th><th>Brand</th><th>Model</th><th>Qty</th><th>Unit</th><th>Price/unit</th><th>Total</th><th>Specification</th><th>Location</th></tr>
+                    </thead>
+                    <tbody id="boqAccessBody"></tbody>
+                </table>
+            </div>
+            <div class="card">
+                <h2>📦 Material & Cabling</h2>
+                <table id="boqMaterial">
+                    <thead>
+                        <tr><th>No</th><th>Kategori</th><th>Item</th><th>Brand</th><th>Model</th><th>Qty</th><th>Unit</th><th>Price/unit</th><th>Total</th><th>Specification</th></tr>
+                    </thead>
+                    <tbody id="boqMaterialBody"></tbody>
+                </table>
+            </div>
+        </div>
+        <div id="risk" class="tab-content">
+            <div class="card">
+                <h2>⚠️ Risk Matrix</h2>
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="display: inline-block; text-align: center;">
+                        <div style="margin-bottom: 5px; font-weight: bold;">Impact →</div>
+                        <div style="display: flex; align-items: center;">
+                            <div style="writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; margin-right: 10px;">Probability →</div>
+                            <div class="risk-matrix">
+                                <div class="risk-cell risk-low">1</div><div class="risk-cell risk-low">2</div><div class="risk-cell risk-low">3</div><div class="risk-cell risk-medium">4</div><div class="risk-cell risk-medium">5</div>
+                                <div class="risk-cell risk-low">2</div><div class="risk-cell risk-low">4</div><div class="risk-cell risk-medium">6</div><div class="risk-cell risk-medium">8</div><div class="risk-cell risk-high">10</div>
+                                <div class="risk-cell risk-low">3</div><div class="risk-cell risk-medium">6</div><div class="risk-cell risk-medium">9</div><div class="risk-cell risk-high">12</div><div class="risk-cell risk-high">15</div>
+                                <div class="risk-cell risk-medium">4</div><div class="risk-cell risk-medium">8</div><div class="risk-cell risk-high">12</div><div class="risk-cell risk-high">16</div><div class="risk-cell risk-high">20</div>
+                                <div class="risk-cell risk-medium">5</div><div class="risk-cell risk-high">10</div><div class="risk-cell risk-high">15</div><div class="risk-cell risk-high">20</div><div class="risk-cell risk-high">25</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h2>⚠️ Risk Register</h2>
+                <div id="riskList"></div>
+            </div>
+        </div>
+        <div id="testing" class="tab-content">
+            <div class="card">
+                <h2>🧪 Testing & Commissioning Checklist</h2>
+                <div class="filters">
+                    <select id="filterTestCategory" onchange="filterTestCategory()">
+                        <option value="">All Categories</option>
+                        <option value="CCTV">CCTV Testing</option>
+                        <option value="Access">Access Control Testing</option>
+                        <option value="Integration">Integration Testing</option>
+                    </select>
+                </div>
+                <table id="testTable">
+                    <thead>
+                        <tr><th>No</th><th>Category</th><th>Test Item</th><th>Method</th><th>Criteria</th><th>Result</th><th>Pass/Fail</th><th>Tester</th><th>Date</th><th>Notes</th></tr>
+                    </thead>
+                    <tbody id="testBody"></tbody>
+                </table>
+            </div>
+        </div>
+        <div id="training" class="tab-content">
+            <div class="card">
+                <h2>🎓 Training Plan</h2>
+                <table id="trainingTable">
+                    <thead>
+                        <tr><th>No</th><th>Training Topic</th><th>Audience</th><th>Duration</th><th>Method</th><th>Material</th><th>Trainer</th><th>Date</th><th>Status</th><th>Attendees</th></tr>
+                    </thead>
+                    <tbody id="trainingBody"></tbody>
+                </table>
+            </div>
+        </div>
+        <div id="maintenance" class="tab-content">
+            <div class="card">
+                <h2>🔧 Maintenance Schedule (1st Year)</h2>
+                <table id="maintTable">
+                    <thead>
+                        <tr><th>No</th><th>Activity</th><th>Frequency</th><th>Next Date</th><th>PIC</th><th>Status</th><th>Notes</th></tr>
+                    </thead>
+                    <tbody id="maintBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+<script>
+const masterData = [
+    { phase: "Inisiasi", no: 1, task: "Site survey & assessment lokasi", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Project Manager", deliverable: "Site Survey Report", notes: "" },
+    { phase: "Inisiasi", no: 2, task: "Identifikasi kebutuhan security", start: "", end: "", duration: 1, status: "Not Started", percent: 0, pic: "Security Consultant", deliverable: "Requirement Document", notes: "" },
+    { phase: "Inisiasi", no: 3, task: "Analisis risiko & threat assessment", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Security Consultant", deliverable: "Risk Analysis Report", notes: "" },
+    { phase: "Inisiasi", no: 4, task: "Penentuan scope project", start: "", end: "", duration: 1, status: "Not Started", percent: 0, pic: "Project Manager", deliverable: "Project Scope Statement", notes: "" },
+    { phase: "Inisiasi", no: 5, task: "Pembuatan BOQ (Bill of Quantity)", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Technical Engineer", deliverable: "BOQ Document", notes: "" },
+    { phase: "Inisiasi", no: 6, task: "Penentuan budget & approval", start: "", end: "", duration: 3, status: "Not Started", percent: 0, pic: "Finance/PM", deliverable: "Approved Budget", notes: "" },
+    { phase: "Inisiasi", no: 7, task: "Pemilihan vendor & supplier", start: "", end: "", duration: 3, status: "Not Started", percent: 0, pic: "Procurement", deliverable: "Vendor Comparison", notes: "" },
+    { phase: "Inisiasi", no: 8, task: "Finalisasi project charter", start: "", end: "", duration: 1, status: "Not Started", percent: 0, pic: "Project Manager", deliverable: "Project Charter", notes: "" },
+    { phase: "Perencanaan", no: 9, task: "Detail engineering design (DED)", start: "", end: "", duration: 5, status: "Not Started", percent: 0, pic: "Technical Engineer", deliverable: "DED Drawing", notes: "" },
+    { phase: "Perencanaan", no: 10, task: "Penjadwalan instalasi detail", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Project Manager", deliverable: "Installation Schedule", notes: "" },
+    { phase: "Perencanaan", no: 11, task: "Procurement plan & PO device", start: "", end: "", duration: 3, status: "Not Started", percent: 0, pic: "Procurement", deliverable: "Purchase Order", notes: "" },
+    { phase: "Perencanaan", no: 12, task: "Resource planning (teknisi, tools)", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Project Manager", deliverable: "Resource Plan", notes: "" },
+    { phase: "Perencanaan", no: 13, task: "Risk register & mitigation plan", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Project Manager", deliverable: "Risk Register", notes: "" },
+    { phase: "Perencanaan", no: 14, task: "Komunikasi plan dengan client", start: "", end: "", duration: 1, status: "Not Started", percent: 0, pic: "Project Manager", deliverable: "Communication Plan", notes: "" },
+    { phase: "Perencanaan", no: 15, task: "Finalisasi project plan", start: "", end: "", duration: 1, status: "Not Started", percent: 0, pic: "Project Manager", deliverable: "Approved Project Plan", notes: "" },
+    { phase: "Procurement", no: 16, task: "Order CCTV cameras (IP/Analog)", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Procurement", deliverable: "PO CCTV", notes: "" },
+    { phase: "Procurement", no: 17, task: "Order Access Control devices", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Procurement", deliverable: "PO Access Control", notes: "" },
+    { phase: "Procurement", no: 18, task: "Order kabel & material (UTP, power, conduit)", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Procurement", deliverable: "PO Material", notes: "" },
+    { phase: "Procurement", no: 19, task: "Order server & storage (NVR/DVR)", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Procurement", deliverable: "PO Server", notes: "" },
+    { phase: "Procurement", no: 20, task: "Delivery & receiving goods", start: "", end: "", duration: 5, status: "Not Started", percent: 0, pic: "Warehouse/PM", deliverable: "Goods Receipt", notes: "" },
+    { phase: "Procurement", no: 21, task: "Inspection & testing barang masuk", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Technical Engineer", deliverable: "Inspection Report", notes: "" },
+    { phase: "Instalasi", no: 22, task: "Persiapan site (cleaning, marking)", start: "", end: "", duration: 1, status: "Not Started", percent: 0, pic: "Site Supervisor", deliverable: "Site Ready Report", notes: "" },
+    { phase: "Instalasi", no: 23, task: "Instalasi conduit & cable tray", start: "", end: "", duration: 5, status: "Not Started", percent: 0, pic: "Teknisi Listrik", deliverable: "Progress Report", notes: "" },
+    { phase: "Instalasi", no: 24, task: "Pulling kabel UTP & power CCTV", start: "", end: "", duration: 5, status: "Not Started", percent: 0, pic: "Teknisi Listrik", deliverable: "Cable Test Report", notes: "" },
+    { phase: "Instalasi", no: 25, task: "Pulling kabel access control (RS485/Wiegand)", start: "", end: "", duration: 3, status: "Not Started", percent: 0, pic: "Teknisi Listrik", deliverable: "Cable Test Report", notes: "" },
+    { phase: "Instalasi", no: 26, task: "Instalasi CCTV cameras (mounting, positioning)", start: "", end: "", duration: 5, status: "Not Started", percent: 0, pic: "Teknisi CCTV", deliverable: "Camera Installation Report", notes: "" },
+    { phase: "Instalasi", no: 27, task: "Instalasi NVR/DVR & storage", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Teknisi CCTV", deliverable: "NVR Setup Report", notes: "" },
+    { phase: "Instalasi", no: 28, task: "Instalasi access control reader", start: "", end: "", duration: 3, status: "Not Started", percent: 0, pic: "Teknisi Access", deliverable: "Reader Installation", notes: "" },
+    { phase: "Instalasi", no: 29, task: "Instalasi door controller & magnetic lock", start: "", end: "", duration: 4, status: "Not Started", percent: 0, pic: "Teknisi Access", deliverable: "Lock Installation", notes: "" },
+    { phase: "Instalasi", no: 30, task: "Instalasi exit button & emergency break", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Teknisi Access", deliverable: "Exit Device Report", notes: "" },
+    { phase: "Instalasi", no: 31, task: "Terminasi & labeling kabel", start: "", end: "", duration: 3, status: "Not Started", percent: 0, pic: "Teknisi Listrik", deliverable: "Termination Report", notes: "" },
+    { phase: "Instalasi", no: 32, task: "Power supply & grounding system", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Teknisi Listrik", deliverable: "Grounding Test", notes: "" },
+    { phase: "Konfigurasi", no: 33, task: "Konfigurasi IP address & network CCTV", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Network Engineer", deliverable: "Network Config", notes: "" },
+    { phase: "Konfigurasi", no: 34, task: "Setup NVR/DVR (recording, schedule)", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Teknisi CCTV", deliverable: "NVR Configuration", notes: "" },
+    { phase: "Konfigurasi", no: 35, task: "Konfigurasi access control controller", start: "", end: "", duration: 3, status: "Not Started", percent: 0, pic: "Teknisi Access", deliverable: "Controller Config", notes: "" },
+    { phase: "Konfigurasi", no: 36, task: "Enrollment user & access card/fingerprint", start: "", end: "", duration: 3, status: "Not Started", percent: 0, pic: "Admin Security", deliverable: "User Database", notes: "" },
+    { phase: "Konfigurasi", no: 37, task: "Integrasi CCTV dengan access control (event linkage)", start: "", end: "", duration: 3, status: "Not Started", percent: 0, pic: "System Integrator", deliverable: "Integration Test", notes: "" },
+    { phase: "Konfigurasi", no: 38, task: "Setup monitoring center / security room", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Teknisi CCTV", deliverable: "Control Room Setup", notes: "" },
+    { phase: "Konfigurasi", no: 39, task: "Konfigurasi remote access & mobile app", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Network Engineer", deliverable: "Remote Access Config", notes: "" },
+    { phase: "Testing", no: 40, task: "CCTV image quality test (day/night/low light)", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "QA Engineer", deliverable: "Image Quality Report", notes: "" },
+    { phase: "Testing", no: 41, task: "CCTV recording test (playback, export)", start: "", end: "", duration: 1, status: "Not Started", percent: 0, pic: "QA Engineer", deliverable: "Recording Test", notes: "" },
+    { phase: "Testing", no: 42, task: "Motion detection & alarm test", start: "", end: "", duration: 1, status: "Not Started", percent: 0, pic: "QA Engineer", deliverable: "Alarm Test Report", notes: "" },
+    { phase: "Testing", no: 43, task: "Access control functional test (card, fingerprint, PIN)", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "QA Engineer", deliverable: "Functional Test", notes: "" },
+    { phase: "Testing", no: 44, task: "Door lock test (force, fail-safe/secure)", start: "", end: "", duration: 1, status: "Not Started", percent: 0, pic: "QA Engineer", deliverable: "Lock Test", notes: "" },
+    { phase: "Testing", no: 45, task: "Emergency exit test", start: "", end: "", duration: 1, status: "Not Started", percent: 0, pic: "QA Engineer", deliverable: "Emergency Test", notes: "" },
+    { phase: "Testing", no: 46, task: "Integration test (CCTV + access control event)", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "System Integrator", deliverable: "Integration Report", notes: "" },
+    { phase: "Testing", no: 47, task: "Network stress test & bandwidth", start: "", end: "", duration: 1, status: "Not Started", percent: 0, pic: "Network Engineer", deliverable: "Network Test", notes: "" },
+    { phase: "Testing", no: 48, task: "Backup & recovery test", start: "", end: "", duration: 1, status: "Not Started", percent: 0, pic: "System Integrator", deliverable: "Backup Test", notes: "" },
+    { phase: "Testing", no: 49, task: "Penetration test (cyber security)", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Security Auditor", deliverable: "PenTest Report", notes: "" },
+    { phase: "Testing", no: 50, task: "Load test (concurrent user access)", start: "", end: "", duration: 1, status: "Not Started", percent: 0, pic: "QA Engineer", deliverable: "Load Test", notes: "" },
+    { phase: "Training", no: 51, task: "Training admin system (CCTV & access control)", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Trainer", deliverable: "Training Material", notes: "" },
+    { phase: "Training", no: 52, task: "Training security officer", start: "", end: "", duration: 1, status: "Not Started", percent: 0, pic: "Trainer", deliverable: "Training Report", notes: "" },
+    { phase: "Training", no: 53, task: "Training end-user (card usage, emergency)", start: "", end: "", duration: 1, status: "Not Started", percent: 0, pic: "Trainer", deliverable: "User Guide", notes: "" },
+    { phase: "Training", no: 54, task: "As-built drawing & documentation", start: "", end: "", duration: 3, status: "Not Started", percent: 0, pic: "Technical Engineer", deliverable: "As-Built Document", notes: "" },
+    { phase: "Training", no: 55, task: "Operation & maintenance manual", start: "", end: "", duration: 3, status: "Not Started", percent: 0, pic: "Technical Engineer", deliverable: "O&M Manual", notes: "" },
+    { phase: "Training", no: 56, task: "Final BOQ & asset register", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Project Manager", deliverable: "Asset Register", notes: "" },
+    { phase: "Training", no: 57, task: "SOP security system", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Security Consultant", deliverable: "SOP Document", notes: "" },
+    { phase: "Penutupan", no: 58, task: "User Acceptance Test (UAT)", start: "", end: "", duration: 3, status: "Not Started", percent: 0, pic: "Client/PM", deliverable: "UAT Sign-off", notes: "" },
+    { phase: "Penutupan", no: 59, task: "Punch list & corrective action", start: "", end: "", duration: 3, status: "Not Started", percent: 0, pic: "Project Manager", deliverable: "Punch List Closed", notes: "" },
+    { phase: "Penutupan", no: 60, task: "Final inspection & handover", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Project Manager", deliverable: "Handover Certificate", notes: "" },
+    { phase: "Penutupan", no: 61, task: "Warranty & maintenance agreement", start: "", end: "", duration: 1, status: "Not Started", percent: 0, pic: "Legal/PM", deliverable: "Warranty Document", notes: "" },
+    { phase: "Penutupan", no: 62, task: "Project closure report", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Project Manager", deliverable: "Closure Report", notes: "" },
+    { phase: "Penutupan", no: 63, task: "Lessons learned session", start: "", end: "", duration: 1, status: "Not Started", percent: 0, pic: "Project Manager", deliverable: "Lessons Learned", notes: "" },
+    { phase: "Penutupan", no: 64, task: "Archiving project document", start: "", end: "", duration: 1, status: "Not Started", percent: 0, pic: "Project Manager", deliverable: "Archive", notes: "" }
+];
+
+const boqCCTVData = [
+    { no: 1, category: "CCTV", item: "IP Dome Camera 4MP", brand: "Hikvision", model: "DS-2CD2143G2-I", qty: 8, unit: "pcs", price: 2500000, spec: "4MP, IR 30m, WDR, IP67", location: "Lobby, koridor" },
+    { no: 2, category: "CCTV", item: "IP Bullet Camera 4MP", brand: "Hikvision", model: "DS-2CD2043G2-I", qty: 12, unit: "pcs", price: 2300000, spec: "4MP, IR 50m, WDR, IP67", location: "Perimeter, parkir" },
+    { no: 3, category: "CCTV", item: "PTZ Camera 2MP", brand: "Hikvision", model: "DS-2DE4225IW-DE", qty: 2, unit: "pcs", price: 8500000, spec: "25x optical zoom, IR 100m", location: "Gate utama" },
+    { no: 4, category: "CCTV", item: "NVR 32 Channel", brand: "Hikvision", model: "DS-7732NI-I4", qty: 1, unit: "unit", price: 12000000, spec: "32ch, 4 HDD bay, 4K output", location: "Server room" },
+    { no: 5, category: "CCTV", item: "Hard Disk 8TB (Surveillance)", brand: "Seagate", model: "ST8000VX004", qty: 4, unit: "pcs", price: 3500000, spec: "7200RPM, 256MB cache", location: "NVR internal" },
+    { no: 6, category: "CCTV", item: "PoE Switch 24 Port", brand: "Cisco", model: "SF220-24P", qty: 2, unit: "unit", price: 8500000, spec: "24 PoE+, 2 SFP", location: "Rack server" },
+    { no: 7, category: "CCTV", item: "Monitor 32 LED", brand: "Samsung", model: "S32A600", qty: 2, unit: "unit", price: 4500000, spec: "4K, HDMI, VESA", location: "Security room" }
+];
+
+const boqAccessData = [
+    { no: 1, category: "Access", item: "Card Reader (Mifare)", brand: "HID", model: "iCLASS SE R40", qty: 15, unit: "pcs", price: 1800000, spec: "13.56MHz, Wiegand", location: "Setiap pintu" },
+    { no: 2, category: "Access", item: "Fingerprint Reader", brand: "ZKTeco", model: "F18", qty: 5, unit: "pcs", price: 2200000, spec: "500 DPI, 3000 template", location: "Pintu utama" },
+    { no: 3, category: "Access", item: "Door Controller 2-Door", brand: "ZKTeco", model: "C3-200", qty: 8, unit: "unit", price: 3500000, spec: "2 door, TCP/IP, Wiegand", location: "Server room" },
+    { no: 4, category: "Access", item: "Electromagnetic Lock 280kg", brand: "YLI", model: "YM-280N", qty: 12, unit: "pcs", price: 850000, spec: "280kg holding force, LED", location: "Pintu kayu" },
+    { no: 5, category: "Access", item: "Electric Strike Lock", brand: "YLI", model: "YS-131NO", qty: 3, unit: "pcs", price: 650000, spec: "Fail-secure, NO", location: "Pintu kaca" },
+    { no: 6, category: "Access", item: "Exit Button (Push)", brand: "ZKTeco", model: "EX-802", qty: 15, unit: "pcs", price: 150000, spec: "Stainless, LED indicator", location: "Dalam ruangan" },
+    { no: 7, category: "Access", item: "Emergency Break Glass", brand: "YLI", model: "YS-911", qty: 8, unit: "pcs", price: 280000, spec: "Resettable, alarm output", location: "Jalur emergency" },
+    { no: 8, category: "Access", item: "Access Card Mifare", brand: "HID", model: "iCLASS 2K", qty: 200, unit: "pcs", price: 45000, spec: "2K bit, ISO 14443", location: "Per user" },
+    { no: 9, category: "Access", item: "Power Supply 12V/5A", brand: "Mean Well", model: "DR-60-12", qty: 10, unit: "unit", price: 350000, spec: "DIN rail, 60W", location: "Panel listrik" },
+    { no: 10, category: "Access", item: "Door Contact Sensor", brand: "Honeywell", model: "7939WG", qty: 15, unit: "pcs", price: 120000, spec: "Recessed, magnetic", location: "Setiap pintu" }
+];
+
+const materialData = [
+    { no: 1, category: "Kabel", item: "UTP Cat 6", brand: "Belden", model: "1583A", qty: 2000, unit: "meter", price: 8500, spec: "23 AWG, solid, PVC" },
+    { no: 2, category: "Kabel", item: "Power Cable 2x1.5mm", brand: "Supreme", model: "NYM 2x1.5", qty: 1500, unit: "meter", price: 6500, spec: "1.5mm, 300/500V" },
+    { no: 3, category: "Kabel", item: "Control Cable 4x0.5mm", brand: "Belden", model: "8723", qty: 800, unit: "meter", price: 12000, spec: "4 pair, shielded" },
+    { no: 4, category: "Material", item: "Conduit PVC 20mm", brand: "Rucika", model: "AW 20mm", qty: 500, unit: "meter", price: 8500, spec: "Tebal, putih" },
+    { no: 5, category: "Material", item: "Cable Tray 100x50", brand: "Local", model: "Galvanized", qty: 200, unit: "meter", price: 45000, spec: "100x50mm, tebal 1.2mm" },
+    { no: 6, category: "Material", item: "Rack Server 42U", brand: "APC", model: "AR3100", qty: 1, unit: "unit", price: 15000000, spec: "42U, vented door, caster" },
+    { no: 7, category: "Material", item: "UPS 3000VA", brand: "APC", model: "SUA3000I", qty: 1, unit: "unit", price: 8500000, spec: "3000VA, pure sine wave" },
+    { no: 8, category: "Material", item: "Patch Panel 24 Port", brand: "Panduit", model: "CPPL24WBLY", qty: 2, unit: "unit", price: 1800000, spec: "Cat 6, 1U" }
+];
+
+const riskData = [
+    { no: 1, risk: "Delay pengiriman device dari supplier", probability: 3, impact: 4, score: 12, level: "High", mitigation: "PO early, buffer stock, vendor backup", owner: "Procurement", status: "Open" },
+    { no: 2, risk: "Kabel tidak cukup / kurang panjang", probability: 2, impact: 3, score: 6, level: "Medium", mitigation: "Site survey detail, BOQ +10% buffer", owner: "Technical", status: "Open" },
+    { no: 3, risk: "Konflik dengan interior/furniture", probability: 3, impact: 3, score: 9, level: "Medium", mitigation: "Koordinasi dengan contractor interior", owner: "Project Manager", status: "Open" },
+    { no: 4, risk: "IP address conflict dengan existing network", probability: 2, impact: 4, score: 8, level: "Medium", mitigation: "IP planning, VLAN segregation", owner: "Network Eng", status: "Open" },
+    { no: 5, risk: "CCTV blind spot setelah instalasi", probability: 2, impact: 4, score: 8, level: "Medium", mitigation: "Simulasi coverage sebelum install", owner: "Technical", status: "Open" },
+    { no: 6, risk: "Magnetic lock tidak kuat (pintu tidak nutup)", probability: 2, impact: 3, score: 6, level: "Medium", mitigation: "Cek door alignment, pilih lock sesuai berat", owner: "Technical", status: "Open" },
+    { no: 7, risk: "Listrik tidak stabil / grounding buruk", probability: 2, impact: 5, score: 10, level: "High", mitigation: "Cek existing listrik, install UPS", owner: "Electrical", status: "Open" },
+    { no: 8, risk: "Cyber attack / hacking CCTV", probability: 2, impact: 5, score: 10, level: "High", mitigation: "Change default password, VLAN, firewall", owner: "Security", status: "Open" },
+    { no: 9, risk: "User tidak menerima hasil (scope creep)", probability: 3, impact: 4, score: 12, level: "High", mitigation: "Scope clear di awal, UAT checklist", owner: "PM", status: "Open" },
+    { no: 10, risk: "Device DOA (Dead on Arrival)", probability: 2, impact: 3, score: 6, level: "Medium", mitigation: "Inspection saat terima, warranty claim", owner: "Warehouse", status: "Open" },
+    { no: 11, risk: "Teknisi tidak tersedia / sakit", probability: 2, impact: 3, score: 6, level: "Medium", mitigation: "Backup teknisi, cross training", owner: "PM", status: "Open" },
+    { no: 12, risk: "Client tidak siap saat UAT", probability: 3, impact: 3, score: 9, level: "Medium", mitigation: "Jadwal UAT diconfirm 2 minggu awal", owner: "PM", status: "Open" },
+    { no: 13, risk: "Data user access hilang / corrupt", probability: 1, impact: 5, score: 5, level: "Medium", mitigation: "Backup berkala, test restore", owner: "System Admin", status: "Open" },
+    { no: 14, risk: "Retention recording tidak cukup", probability: 2, impact: 4, score: 8, level: "Medium", mitigation: "Hitung storage 30/60/90 hari", owner: "Technical", status: "Open" },
+    { no: 15, risk: "Integrasi CCTV-Access Control gagal", probability: 2, impact: 4, score: 8, level: "Medium", mitigation: "Test compatibility sebelum install", owner: "Integrator", status: "Open" }
+];
+
+const testData = [
+    { no: 1, category: "CCTV", item: "Daylight visibility", method: "Visual check", criteria: "Clear, no blur, color accurate", result: "", pass: "", tester: "", date: "", notes: "" },
+    { no: 2, category: "CCTV", item: "Night/IR visibility", method: "Test malam hari", criteria: "IR coverage 30m, no glare", result: "", pass: "", tester: "", date: "", notes: "" },
+    { no: 3, category: "CCTV", item: "WDR performance", method: "Backlight test", criteria: "Detail terlihat di area gelap & terang", result: "", pass: "", tester: "", date: "", notes: "" },
+    { no: 4, category: "CCTV", item: "Field of view (FOV)", method: "Measure angle", criteria: "Sesuai DED, no blind spot", result: "", pass: "", tester: "", date: "", notes: "" },
+    { no: 5, category: "CCTV", item: "Continuous recording 24/7", method: "Cek playback", criteria: "Tidak ada gap, timestamp benar", result: "", pass: "", tester: "", date: "", notes: "" },
+    { no: 6, category: "CCTV", item: "Motion detection recording", method: "Trigger motion", criteria: "Record saat ada gerakan", result: "", pass: "", tester: "", date: "", notes: "" },
+    { no: 7, category: "CCTV", item: "Storage capacity", method: "Calculate retention", criteria: "30 hari (atau sesuai kontrak)", result: "", pass: "", tester: "", date: "", notes: "" },
+    { no: 8, category: "CCTV", item: "Ping test", method: "CMD ping", criteria: "Latency <50ms, no packet loss", result: "", pass: "", tester: "", date: "", notes: "" },
+    { no: 9, category: "CCTV", item: "Bandwidth usage", method: "Monitor switch", criteria: "<70% bandwidth available", result: "", pass: "", tester: "", date: "", notes: "" },
+    { no: 10, category: "CCTV", item: "Mobile app access", method: "Test dari luar", criteria: "Live view, playback, PTZ control", result: "", pass: "", tester: "", date: "", notes: "" },
+    { no: 11, category: "Access", item: "Read range", method: "Test jarak", criteria: "3-5 cm, consistent", result: "", pass: "", tester: "", date: "", notes: "" },
+    { no: 12, category: "Access", item: "Enrollment & matching", method: "Test 10x", criteria: "FAR <0.001%, FRR <1%", result: "", pass: "", tester: "", date: "", notes: "" },
+    { no: 13, category: "Access", item: "Holding force", method: "Force test 280kg", criteria: "Pintu tidak terbuka", result: "", pass: "", tester: "", date: "", notes: "" },
+    { no: 14, category: "Access", item: "Fail-safe mode", method: "Matikan listrik", criteria: "Lock open/locked sesuai setting", result: "", pass: "", tester: "", date: "", notes: "" },
+    { no: 15, category: "Access", item: "Normal release", method: "Tekan button", criteria: "Pintu unlock, buzzer", result: "", pass: "", tester: "", date: "", notes: "" },
+    { no: 16, category: "Access", item: "Break glass test", method: "Pecahkan glass", criteria: "Pintu unlock, alarm trigger", result: "", pass: "", tester: "", date: "", notes: "" },
+    { no: 17, category: "Access", item: "Anti-Passback", method: "Tailgating test", criteria: "Orang kedua ditolak", result: "", pass: "", tester: "", date: "", notes: "" },
+    { no: 18, category: "Access", item: "Time Zone schedule", method: "Test jam 22:00", criteria: "Access denied outside schedule", result: "", pass: "", tester: "", date: "", notes: "" },
+    { no: 19, category: "Integration", item: "CCTV record on access event", method: "Trigger access", criteria: "CCTV record 10 detik sebelum & sesudah", result: "", pass: "", tester: "", date: "", notes: "" },
+    { no: 20, category: "Integration", item: "Transaction log", method: "Export data", criteria: "Log lengkap, searchable, exportable", result: "", pass: "", tester: "", date: "", notes: "" }
+];
+
+const trainingData = [
+    { no: 1, topic: "System Overview & Architecture", audience: "IT Admin, Security", duration: "2 jam", method: "Presentation", material: "Slide, diagram", trainer: "System Integrator", date: "", status: "Not Started", attendees: "" },
+    { no: 2, topic: "CCTV Operation (live view, playback, export)", audience: "Security Officer", duration: "4 jam", method: "Hands-on", material: "Manual, demo", trainer: "Teknisi CCTV", date: "", status: "Not Started", attendees: "" },
+    { no: 3, topic: "CCTV Admin (add camera, config, backup)", audience: "IT Admin", duration: "4 jam", method: "Hands-on", material: "Admin guide", trainer: "Teknisi CCTV", date: "", status: "Not Started", attendees: "" },
+    { no: 4, topic: "Access Control Operation (monitor, alarm response)", audience: "Security Officer", duration: "2 jam", method: "Hands-on", material: "Manual, demo", trainer: "Teknisi Access", date: "", status: "Not Started", attendees: "" },
+    { no: 5, topic: "Access Control Admin (add user, enrollment, report)", audience: "HR/IT Admin", duration: "4 jam", method: "Hands-on", material: "Admin guide", trainer: "Teknisi Access", date: "", status: "Not Started", attendees: "" },
+    { no: 6, topic: "Troubleshooting Basic", audience: "IT Admin", duration: "2 jam", method: "Hands-on", material: "Troubleshooting guide", trainer: "System Integrator", date: "", status: "Not Started", attendees: "" },
+    { no: 7, topic: "Emergency Procedure", audience: "All Staff", duration: "1 jam", method: "Presentation", material: "SOP, video", trainer: "Security Consultant", date: "", status: "Not Started", attendees: "" },
+    { no: 8, topic: "End User (penggunaan card, lapor kehilangan)", audience: "All Employees", duration: "30 menit", method: "Video/Booklet", material: "User guide", trainer: "HR", date: "", status: "Not Started", attendees: "" }
+];
+
+const maintData = [
+    { no: 1, activity: "Cleaning CCTV lens & housing", frequency: "Bulanan", nextDate: "", pic: "Teknisi", status: "Not Started", notes: "Cek debu, air, spider web" },
+    { no: 2, activity: "Check CCTV angle & focus", frequency: "Bulanan", nextDate: "", pic: "Teknisi", status: "Not Started", notes: "Adjust jika bergeser" },
+    { no: 3, activity: "Test recording & playback", frequency: "Bulanan", nextDate: "", pic: "Teknisi", status: "Not Started", notes: "Cek gap, kualitas" },
+    { no: 4, activity: "Check storage capacity & health", frequency: "Bulanan", nextDate: "", pic: "Teknisi", status: "Not Started", notes: "Cek HDD SMART, fragmentasi" },
+    { no: 5, activity: "Test access control all doors", frequency: "Bulanan", nextDate: "", pic: "Teknisi", status: "Not Started", notes: "Cek lock, reader, exit button" },
+    { no: 6, activity: "Clean card reader & fingerprint sensor", frequency: "Bulanan", nextDate: "", pic: "Teknisi", status: "Not Started", notes: "Alcohol wipe, cek scratch" },
+    { no: 7, activity: "Backup database access control", frequency: "Mingguan", nextDate: "", pic: "Admin", status: "Not Started", notes: "Export ke external storage" },
+    { no: 8, activity: "Update firmware CCTV & access control", frequency: "3 Bulan", nextDate: "", pic: "Teknisi", status: "Not Started", notes: "Cek release notes, test dulu" },
+    { no: 9, activity: "Test UPS & backup power", frequency: "3 Bulan", nextDate: "", pic: "Teknisi", status: "Not Started", notes: "Runtime test, ganti baterai jika perlu" },
+    { no: 10, activity: "Network security audit", frequency: "6 Bulan", nextDate: "", pic: "Security", status: "Not Started", notes: "Cek password, patch, log" },
+    { no: 11, activity: "Full system diagnostic", frequency: "6 Bulan", nextDate: "", pic: "Vendor", status: "Not Started", notes: "Comprehensive check" },
+    { no: 12, activity: "Review user access rights", frequency: "6 Bulan", nextDate: "", pic: "HR", status: "Not Started", notes: "Hapus user resign, update level" }
+];
+
+function showTab(tabName) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+    document.getElementById(tabName).classList.add('active');
+    event.target.classList.add('active');
+    if (tabName === 'gantt') renderGantt();
+}
+
+function getStatusBadge(status) {
+    return '<span class="status-badge status-' + status.toLowerCase().replace(' ', '-') + '">' + status + '</span>';
+}
+
+function renderMasterTable() {
+    const tbody = document.getElementById('masterBody');
+    let currentPhase = '';
+    let html = '';
+    masterData.forEach(item => {
+        if (item.phase !== currentPhase) {
+            currentPhase = item.phase;
+            html += '<tr class="phase-header"><td colspan="11">' + item.phase + '</td></tr>';
+        }
+        html += '<tr>' +
+            '<td>' + item.no + '</td>' +
+            '<td>' + item.phase + '</td>' +
+            '<td>' + item.task + '</td>' +
+            '<td><input type="date" class="date-input" value="' + item.start + '" onchange="updateData(' + item.no + ', ' + "'" + 'start' + "'" + ', this.value)"></td>' +
+            '<td><input type="date" class="date-input" value="' + item.end + '" onchange="updateData(' + item.no + ', ' + "'" + 'end' + "'" + ', this.value)"></td>' +
+            '<td>' + item.duration + '</td>' +
+            '<td>' +
+                '<select class="status-select" onchange="updateStatus(' + item.no + ', this.value)">' +
+                    '<option value="Not Started"' + (item.status === 'Not Started' ? ' selected' : '') + '>Not Started</option>' +
+                    '<option value="In Progress"' + (item.status === 'In Progress' ? ' selected' : '') + '>In Progress</option>' +
+                    '<option value="Completed"' + (item.status === 'Completed' ? ' selected' : '') + '>Completed</option>' +
+                    '<option value="Delayed"' + (item.status === 'Delayed' ? ' selected' : '') + '>Delayed</option>' +
+                '</select>' +
+            '</td>' +
+            '<td><input type="number" class="percentage-input" value="' + item.percent + '" min="0" max="100" onchange="updatePercent(' + item.no + ', this.value)"></td>' +
+            '<td>' + item.pic + '</td>' +
+            '<td>' + item.deliverable + '</td>' +
+            '<td><input type="text" class="note-input" value="' + item.notes + '" placeholder="Notes..." onchange="updateData(' + item.no + ', ' + "'" + 'notes' + "'" + ', this.value)"></td>' +
+        '</tr>';
+    });
+    tbody.innerHTML = html;
+    updateStats();
+}
+
+function updateData(no, field, value) {
+    const item = masterData.find(d => d.no === no);
+    if (item) item[field] = value;
+}
+
+function updateStatus(no, status) {
+    const item = masterData.find(d => d.no === no);
+    if (item) {
+        item.status = status;
+        if (status === 'Completed') item.percent = 100;
+        else if (status === 'Not Started') item.percent = 0;
+        else if (status === 'In Progress' && item.percent === 0) item.percent = 50;
+        renderMasterTable();
+    }
+}
+
+function updatePercent(no, percent) {
+    const item = masterData.find(d => d.no === no);
+    if (item) {
+        item.percent = parseInt(percent);
+        if (item.percent === 100) item.status = 'Completed';
+        else if (item.percent === 0) item.status = 'Not Started';
+        else if (item.percent > 0 && item.percent < 100) item.status = 'In Progress';
+        renderMasterTable();
+    }
+}
+
+function updateStats() {
+    const total = masterData.length;
+    const completed = masterData.filter(d => d.status === 'Completed').length;
+    const inProgress = masterData.filter(d => d.status === 'In Progress').length;
+    const delayed = masterData.filter(d => d.status === 'Delayed').length;
+    const totalPercent = masterData.reduce((sum, d) => sum + d.percent, 0) / total;
+
+    document.getElementById('totalTasks').textContent = total;
+    document.getElementById('completedTasks').textContent = completed;
+    document.getElementById('inProgressTasks').textContent = inProgress;
+    document.getElementById('delayedTasks').textContent = delayed;
+    document.getElementById('totalProgress').style.width = totalPercent + '%';
+    document.getElementById('completedProgress').style.width = (completed/total*100) + '%';
+    document.getElementById('inProgressBar').style.width = (inProgress/total*100) + '%';
+    document.getElementById('delayedBar').style.width = (delayed/total*100) + '%';
+    document.getElementById('budgetUsed').textContent = Math.round(totalPercent) + '%';
+    document.getElementById('budgetBar').style.width = totalPercent + '%';
+
+    const hasDates = masterData.some(d => d.end !== '');
+    if (hasDates) {
+        const dates = masterData.filter(d => d.end !== '').map(d => new Date(d.end));
+        const maxDate = new Date(Math.max.apply(null, dates));
+        const today = new Date();
+        const diff = Math.ceil((maxDate - today) / (1000 * 60 * 60 * 24));
+        document.getElementById('daysRemaining').textContent = diff > 0 ? diff : 0;
+    }
+}
+
+function filterTable(tableId, searchTerm) {
+    const table = document.getElementById(tableId);
+    const rows = table.getElementsByTagName('tr');
+    for (let i = 1; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName('td');
+        let found = false;
+        for (let j = 0; j < cells.length; j++) {
+            if (cells[j].textContent.toLowerCase().includes(searchTerm.toLowerCase())) {
+                found = true;
+                break;
+            }
+        }
+        rows[i].style.display = found ? '' : 'none';
+    }
+}
+
+function filterPhase() {
+    const phase = document.getElementById('filterPhase').value;
+    const rows = document.getElementById('masterTable').getElementsByTagName('tr');
+    for (let i = 1; i < rows.length; i++) {
+        if (rows[i].classList.contains('phase-header')) {
+            rows[i].style.display = phase === '' || rows[i].textContent.includes(phase) ? '' : 'none';
+        } else {
+            const cell = rows[i].getElementsByTagName('td')[1];
+            if (cell) {
+                rows[i].style.display = phase === '' || cell.textContent === phase ? '' : 'none';
+            }
+        }
+    }
+}
+
+function filterStatus() {
+    const status = document.getElementById('filterStatus').value;
+    const rows = document.getElementById('masterTable').getElementsByTagName('tr');
+    for (let i = 1; i < rows.length; i++) {
+        if (!rows[i].classList.contains('phase-header')) {
+            const cell = rows[i].getElementsByTagName('td')[6];
+            if (cell) {
+                const select = cell.querySelector('select');
+                const val = select ? select.value : cell.textContent;
+                rows[i].style.display = status === '' || val === status ? '' : 'none';
+            }
+        }
+    }
+}
+
+function renderGantt() {
+    const container = document.getElementById('ganttChart');
+    let html = '<div style="margin-bottom: 10px; font-weight: bold;">Project Timeline (Weeks 1-20)</div>';
+
+    let currentPhase = '';
+    masterData.forEach(item => {
+        if (item.phase !== currentPhase) {
+            currentPhase = item.phase;
+            html += '<div style="font-weight: bold; margin: 15px 0 5px 0; color: #1e3c72;">' + item.phase + '</div>';
+        }
+
+        const startWeek = Math.floor((item.no - 1) / 3) + 1;
+        const width = item.duration * 5;
+        const left = (startWeek - 1) * 5;
+
+        html += '<div class="gantt-row">' +
+            '<div class="gantt-label">' + item.no + '. ' + item.task + '</div>' +
+            '<div class="gantt-timeline">' +
+                '<div class="gantt-bar ' + item.status.toLowerCase().replace(' ', '-') + '" style="left: ' + left + '%; width: ' + width + '%;">' + item.duration + 'd</div>' +
+            '</div>' +
+        '</div>';
+    });
+
+    container.innerHTML = html;
+}
+
+function renderBOQ() {
+    let html = '';
+    let totalCCTV = 0;
+    boqCCTVData.forEach(item => {
+        const total = item.qty * item.price;
+        totalCCTV += total;
+        html += '<tr>' +
+            '<td>' + item.no + '</td>' +
+            '<td>' + item.category + '</td>' +
+            '<td>' + item.item + '</td>' +
+            '<td>' + item.brand + '</td>' +
+            '<td>' + item.model + '</td>' +
+            '<td>' + item.qty + '</td>' +
+            '<td>' + item.unit + '</td>' +
+            '<td>Rp ' + item.price.toLocaleString() + '</td>' +
+            '<td>Rp ' + total.toLocaleString() + '</td>' +
+            '<td>' + item.spec + '</td>' +
+            '<td>' + item.location + '</td>' +
+        '</tr>';
+    });
+    html += '<tr style="font-weight: bold; background: #e3f2fd;"><td colspan="8">TOTAL CCTV SYSTEM</td><td>Rp ' + totalCCTV.toLocaleString() + '</td><td colspan="2"></td></tr>';
+    document.getElementById('boqCCTVBody').innerHTML = html;
+
+    html = '';
+    let totalAccess = 0;
+    boqAccessData.forEach(item => {
+        const total = item.qty * item.price;
+        totalAccess += total;
+        html += '<tr>' +
+            '<td>' + item.no + '</td>' +
+            '<td>' + item.category + '</td>' +
+            '<td>' + item.item + '</td>' +
+            '<td>' + item.brand + '</td>' +
+            '<td>' + item.model + '</td>' +
+            '<td>' + item.qty + '</td>' +
+            '<td>' + item.unit + '</td>' +
+            '<td>Rp ' + item.price.toLocaleString() + '</td>' +
+            '<td>Rp ' + total.toLocaleString() + '</td>' +
+            '<td>' + item.spec + '</td>' +
+            '<td>' + item.location + '</td>' +
+        '</tr>';
+    });
+    html += '<tr style="font-weight: bold; background: #e3f2fd;"><td colspan="8">TOTAL ACCESS CONTROL</td><td>Rp ' + totalAccess.toLocaleString() + '</td><td colspan="2"></td></tr>';
+    document.getElementById('boqAccessBody').innerHTML = html;
+
+    html = '';
+    let totalMaterial = 0;
+    materialData.forEach(item => {
+        const total = item.qty * item.price;
+        totalMaterial += total;
+        html += '<tr>' +
+            '<td>' + item.no + '</td>' +
+            '<td>' + item.category + '</td>' +
+            '<td>' + item.item + '</td>' +
+            '<td>' + item.brand + '</td>' +
+            '<td>' + item.model + '</td>' +
+            '<td>' + item.qty + '</td>' +
+            '<td>' + item.unit + '</td>' +
+            '<td>Rp ' + item.price.toLocaleString() + '</td>' +
+            '<td>Rp ' + total.toLocaleString() + '</td>' +
+            '<td>' + item.spec + '</td>' +
+        '</tr>';
+    });
+    html += '<tr style="font-weight: bold; background: #e3f2fd;"><td colspan="8">TOTAL MATERIAL & CABLING</td><td>Rp ' + totalMaterial.toLocaleString() + '</td><td></td></tr>';
+    html += '<tr style="font-weight: bold; background: #1e3c72; color: white;"><td colspan="8">GRAND TOTAL PROJECT</td><td>Rp ' + (totalCCTV + totalAccess + totalMaterial).toLocaleString() + '</td><td></td></tr>';
+    document.getElementById('boqMaterialBody').innerHTML = html;
+}
+
+function renderRisk() {
+    let html = '';
+    riskData.forEach(item => {
+        html += '<div class="risk-item ' + item.level.toLowerCase() + '">' +
+            '<div>' +
+                '<strong>#' + item.no + ' ' + item.risk + '</strong><br>' +
+                '<small>Probability: ' + item.probability + ' | Impact: ' + item.impact + ' | Score: ' + item.score + ' | Level: ' + item.level + '</small><br>' +
+                '<small><strong>Mitigation:</strong> ' + item.mitigation + '</small><br>' +
+                '<small><strong>Owner:</strong> ' + item.owner + ' | <strong>Status:</strong> ' + item.status + '</small>' +
+            '</div>' +
+            '<div style="font-size: 2em;">' + (item.level === 'High' ? '🔴' : item.level === 'Medium' ? '🟡' : '🟢') + '</div>' +
+        '</div>';
+    });
+    document.getElementById('riskList').innerHTML = html;
+}
+
+function renderTesting() {
+    let html = '';
+    testData.forEach(item => {
+        html += '<tr>' +
+            '<td>' + item.no + '</td>' +
+            '<td>' + item.category + '</td>' +
+            '<td>' + item.item + '</td>' +
+            '<td>' + item.method + '</td>' +
+            '<td>' + item.criteria + '</td>' +
+            '<td><input type="text" class="note-input" value="' + item.result + '" placeholder="Result..." onchange="updateTestData(' + item.no + ', ' + "'" + 'result' + "'" + ', this.value)"></td>' +
+            '<td>' +
+                '<select class="status-select" onchange="updateTestData(' + item.no + ', ' + "'" + 'pass' + "'" + ', this.value)">' +
+                    '<option value=""' + (item.pass === '' ? ' selected' : '') + '>--</option>' +
+                    '<option value="Pass"' + (item.pass === 'Pass' ? ' selected' : '') + '>✅ Pass</option>' +
+                    '<option value="Fail"' + (item.pass === 'Fail' ? ' selected' : '') + '>❌ Fail</option>' +
+                '</select>' +
+            '</td>' +
+            '<td><input type="text" class="note-input" value="' + item.tester + '" placeholder="Tester..." onchange="updateTestData(' + item.no + ', ' + "'" + 'tester' + "'" + ', this.value)"></td>' +
+            '<td><input type="date" class="date-input" value="' + item.date + '" onchange="updateTestData(' + item.no + ', ' + "'" + 'date' + "'" + ', this.value)"></td>' +
+            '<td><input type="text" class="note-input" value="' + item.notes + '" placeholder="Notes..." onchange="updateTestData(' + item.no + ', ' + "'" + 'notes' + "'" + ', this.value)"></td>' +
+        '</tr>';
+    });
+    document.getElementById('testBody').innerHTML = html;
+}
+
+function updateTestData(no, field, value) {
+    const item = testData.find(d => d.no === no);
+    if (item) item[field] = value;
+}
+
+function filterTestCategory() {
+    const cat = document.getElementById('filterTestCategory').value;
+    const rows = document.getElementById('testTable').getElementsByTagName('tr');
+    for (let i = 1; i < rows.length; i++) {
+        const cell = rows[i].getElementsByTagName('td')[1];
+        if (cell) {
+            rows[i].style.display = cat === '' || cell.textContent === cat ? '' : 'none';
+        }
+    }
+}
+
+function renderTraining() {
+    let html = '';
+    trainingData.forEach(item => {
+        html += '<tr>' +
+            '<td>' + item.no + '</td>' +
+            '<td>' + item.topic + '</td>' +
+            '<td>' + item.audience + '</td>' +
+            '<td>' + item.duration + '</td>' +
+            '<td>' + item.method + '</td>' +
+            '<td>' + item.material + '</td>' +
+            '<td>' + item.trainer + '</td>' +
+            '<td><input type="date" class="date-input" value="' + item.date + '" onchange="updateTrainingData(' + item.no + ', ' + "'" + 'date' + "'" + ', this.value)"></td>' +
+            '<td>' +
+                '<select class="status-select" onchange="updateTrainingData(' + item.no + ', ' + "'" + 'status' + "'" + ', this.value)">' +
+                    '<option value="Not Started"' + (item.status === 'Not Started' ? ' selected' : '') + '>Not Started</option>' +
+                    '<option value="Scheduled"' + (item.status === 'Scheduled' ? ' selected' : '') + '>Scheduled</option>' +
+                    '<option value="Completed"' + (item.status === 'Completed' ? ' selected' : '') + '>Completed</option>' +
+                '</select>' +
+            '</td>' +
+            '<td><input type="text" class="note-input" value="' + item.attendees + '" placeholder="Attendees..." onchange="updateTrainingData(' + item.no + ', ' + "'" + 'attendees' + "'" + ', this.value)"></td>' +
+        '</tr>';
+    });
+    document.getElementById('trainingBody').innerHTML = html;
+}
+
+function updateTrainingData(no, field, value) {
+    const item = trainingData.find(d => d.no === no);
+    if (item) item[field] = value;
+}
+
+function renderMaintenance() {
+    let html = '';
+    maintData.forEach(item => {
+        html += '<tr>' +
+            '<td>' + item.no + '</td>' +
+            '<td>' + item.activity + '</td>' +
+            '<td>' + item.frequency + '</td>' +
+            '<td><input type="date" class="date-input" value="' + item.nextDate + '" onchange="updateMaintData(' + item.no + ', ' + "'" + 'nextDate' + "'" + ', this.value)"></td>' +
+            '<td>' + item.pic + '</td>' +
+            '<td>' +
+                '<select class="status-select" onchange="updateMaintData(' + item.no + ', ' + "'" + 'status' + "'" + ', this.value)">' +
+                    '<option value="Not Started"' + (item.status === 'Not Started' ? ' selected' : '') + '>Not Started</option>' +
+                    '<option value="In Progress"' + (item.status === 'In Progress' ? ' selected' : '') + '>In Progress</option>' +
+                    '<option value="Completed"' + (item.status === 'Completed' ? ' selected' : '') + '>Completed</option>' +
+                '</select>' +
+            '</td>' +
+            '<td>' + item.notes + '</td>' +
+        '</tr>';
+    });
+    document.getElementById('maintBody').innerHTML = html;
+}
+
+function updateMaintData(no, field, value) {
+    const item = maintData.find(d => d.no === no);
+    if (item) item[field] = value;
+}
+
+function exportToCSV() {
+    let csv = 'No,Fase,Task,Start Date,End Date,Duration,Status,Percent,PIC,Deliverable,Notes\n';
+    masterData.forEach(item => {
+        csv += item.no + ',' + item.phase + ',' + '"' + item.task + '"' + ',' + item.start + ',' + item.end + ',' + item.duration + ',' + item.status + ',' + item.percent + ',' + item.pic + ',' + '"' + item.deliverable + '"' + ',' + '"' + item.notes + '"' + '\n';
+    });
+
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.setAttribute('hidden', '');
+    a.setAttribute('href', url);
+    a.setAttribute('download', 'security_project_plan.csv');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+function saveData() {
+    const data = {
+        master: masterData,
+        test: testData,
+        training: trainingData,
+        maintenance: maintData
+    };
+    localStorage.setItem('securityProjectData', JSON.stringify(data));
+    alert('Data saved successfully!');
+}
+
+function loadData() {
+    const saved = localStorage.getItem('securityProjectData');
+    if (saved) {
+        const data = JSON.parse(saved);
+        if (data.master) {
+            data.master.forEach((item, i) => {
+                if (masterData[i]) {
+                    masterData[i].start = item.start || '';
+                    masterData[i].end = item.end || '';
+                    masterData[i].status = item.status || 'Not Started';
+                    masterData[i].percent = item.percent || 0;
+                    masterData[i].notes = item.notes || '';
+                }
+            });
+        }
+        if (data.test) {
+            data.test.forEach((item, i) => {
+                if (testData[i]) {
+                    testData[i].result = item.result || '';
+                    testData[i].pass = item.pass || '';
+                    testData[i].tester = item.tester || '';
+                    testData[i].date = item.date || '';
+                    testData[i].notes = item.notes || '';
+                }
+            });
+        }
+        if (data.training) {
+            data.training.forEach((item, i) => {
+                if (trainingData[i]) {
+                    trainingData[i].date = item.date || '';
+                    trainingData[i].status = item.status || 'Not Started';
+                    trainingData[i].attendees = item.attendees || '';
+                }
+            });
+        }
+        if (data.maintenance) {
+            data.maintenance.forEach((item, i) => {
+                if (maintData[i]) {
+                    maintData[i].nextDate = item.nextDate || '';
+                    maintData[i].status = item.status || 'Not Started';
+                }
+            });
+        }
+        renderMasterTable();
+        renderTesting();
+        renderTraining();
+        renderMaintenance();
+        alert('Data loaded successfully!');
+    } else {
+        alert('No saved data found!');
+    }
+}
+
+function resetData() {
+    if (confirm('Are you sure you want to reset all data? This cannot be undone.')) {
+        localStorage.removeItem('securityProjectData');
+        location.reload();
+    }
+}
+
+// Initialize
+renderMasterTable();
+renderBOQ();
+renderRisk();
+renderTesting();
+renderTraining();
+renderMaintenance();
+</script>
+</body>
+</html>
