@@ -33,7 +33,6 @@
         .card h2 { color: #1e3c72; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #e3f2fd; }
         .filters { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
         .filters select, .filters input { padding: 10px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.9em; background: white; }
-        .filters select:focus, .filters input:focus { outline: none; border-color: #1e3c72; }
         table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
         th { background: #1e3c72; color: white; padding: 14px 10px; text-align: left; font-weight: 600; position: sticky; top: 0; }
         td { padding: 12px 10px; border-bottom: 1px solid #eee; }
@@ -46,51 +45,39 @@
         .status-select { padding: 5px 10px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.85em; cursor: pointer; }
         .phase-header { background: #e3f2fd !important; font-weight: bold; color: #1e3c72; }
         .phase-header td { border-bottom: 2px solid #1e3c72; }
-        .gantt-chart { overflow-x: auto; }
-        .gantt-row { display: flex; align-items: center; padding: 8px 0; border-bottom: 1px solid #eee; }
-        .gantt-label { width: 300px; font-size: 0.85em; padding-right: 15px; flex-shrink: 0; }
-        .gantt-timeline { flex: 1; position: relative; height: 30px; background: #f5f5f5; border-radius: 4px; }
-        .gantt-bar { position: absolute; height: 24px; top: 3px; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.75em; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
-        .gantt-bar:hover { opacity: 0.85; }
-        .gantt-bar.completed { background: #4CAF50; }
-        .gantt-bar.in-progress { background: #FF9800; }
-        .gantt-bar.not-started { background: #9E9E9E; }
-        .gantt-bar.delayed { background: #F44336; }
-        .risk-matrix { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; max-width: 600px; margin: 20px auto; }
-        .risk-cell { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: bold; font-size: 1.2em; color: white; }
-        .risk-low { background: #4CAF50; }
-        .risk-medium { background: #FF9800; }
-        .risk-high { background: #F44336; }
-        .risk-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f8f9fa; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid; }
-        .risk-item.high { border-left-color: #F44336; }
-        .risk-item.medium { border-left-color: #FF9800; }
-        .risk-item.low { border-left-color: #4CAF50; }
         .btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9em; font-weight: 600; transition: all 0.3s; }
         .btn-primary { background: #1e3c72; color: white; }
         .btn-primary:hover { background: #2a5298; }
         .btn-success { background: #4CAF50; color: white; }
         .btn-success:hover { background: #45a049; }
-        .export-buttons { display: flex; gap: 10px; margin-bottom: 20px; }
-        .timeline-months { display: flex; justify-content: space-between; padding: 5px 0; font-size: 0.8em; color: #666; border-bottom: 1px solid #ddd; margin-bottom: 5px; }
+        .btn-warning { background: #FF9800; color: white; }
+        .export-buttons { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
         .search-box { padding: 10px 15px; border: 1px solid #ddd; border-radius: 8px; width: 300px; font-size: 0.9em; }
         .percentage-input { width: 60px; padding: 5px; border: 1px solid #ddd; border-radius: 4px; text-align: center; }
         .date-input { padding: 5px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85em; }
         .note-input { width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85em; }
-        @media print { .tabs, .filters, .export-buttons, .status-select, .percentage-input, .date-input, .note-input { display: none !important; } .tab-content { display: block !important; } body { background: white; } .card { box-shadow: none; border: 1px solid #ddd; } }
-        @media (max-width: 768px) { .header h1 { font-size: 1.8em; } .gantt-label { width: 150px; font-size: 0.75em; } .filters { flex-direction: column; } .search-box { width: 100%; } table { font-size: 0.8em; } th, td { padding: 8px 5px; } }
+        .loading { text-align: center; padding: 20px; color: #666; }
+        .error-msg { background: #ffebee; color: #c62828; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+        .success-msg { background: #e8f5e9; color: #2e7d32; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+        .config-panel { background: #fff3e0; border: 2px dashed #FF9800; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
+        .config-panel h3 { color: #e65100; margin-bottom: 15px; }
+        .config-panel input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 6px; }
+        .config-panel button { margin-top: 10px; }
+        @media print { .tabs, .filters, .export-buttons, .status-select, .percentage-input, .date-input, .note-input, .config-panel { display: none !important; } .tab-content { display: block !important; } body { background: white; } .card { box-shadow: none; border: 1px solid #ddd; } }
+        @media (max-width: 768px) { .header h1 { font-size: 1.8em; } .filters { flex-direction: column; } .search-box { width: 100%; } table { font-size: 0.8em; } th, td { padding: 8px 5px; } }
     </style>
 <base target="_blank">
 </head>
 <body>
     <div class="header">
         <h1>Security System Project Plan</h1>
-        <p>Access Control & CCTV Installation Project</p>
+        <p>Access Control & CCTV Installation Project - Google Sheets Edition</p>
     </div>
     <div class="container">
         <div class="dashboard">
             <div class="stat-card">
                 <div class="icon">📋</div>
-                <div class="number" id="totalTasks">64</div>
+                <div class="number" id="totalTasks">0</div>
                 <div class="label">Total Tasks</div>
                 <div class="progress-bar"><div class="progress-fill not-started" id="totalProgress" style="width: 0%"></div></div>
             </div>
@@ -124,22 +111,36 @@
                 <div class="progress-bar"><div class="progress-fill in-progress" id="budgetBar" style="width: 0%"></div></div>
             </div>
         </div>
+
+        <!-- Configuration Panel -->
+        <div class="config-panel" id="configPanel">
+            <h3>⚙️ Google Sheets Configuration</h3>
+            <p style="margin-bottom: 10px; color: #666;">Masukkan URL Google Sheets yang sudah di-publish (CSV format):</p>
+            <label><strong>Spreadsheet ID:</strong></label>
+            <input type="text" id="spreadsheetId" placeholder="Contoh: 1ABC123xyz... (dari URL Google Sheets)">
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="saveConfig()">💾 Simpan Config</button>
+                <button class="btn btn-warning" onclick="useLocalData()">📂 Gunakan Data Lokal</button>
+                <button class="btn btn-success" onclick="testConnection()">🔄 Test Koneksi</button>
+            </div>
+            <div id="configStatus"></div>
+        </div>
+
         <div class="export-buttons">
             <button class="btn btn-success" onclick="exportToCSV()">📥 Export to CSV</button>
             <button class="btn btn-primary" onclick="window.print()">🖨️ Print Report</button>
-            <button class="btn btn-primary" onclick="saveData()">💾 Save Data</button>
-            <button class="btn btn-primary" onclick="loadData()">📂 Load Data</button>
-            <button class="btn btn-primary" onclick="resetData()">🔄 Reset</button>
+            <button class="btn btn-primary" onclick="location.reload()">🔄 Refresh Data</button>
         </div>
+
         <div class="tabs">
             <button class="tab-btn active" onclick="showTab('master')">📋 Master Plan</button>
-            <button class="tab-btn" onclick="showTab('gantt')">📊 Gantt Chart</button>
             <button class="tab-btn" onclick="showTab('boq')">📦 BOQ & Specs</button>
             <button class="tab-btn" onclick="showTab('risk')">⚠️ Risk Register</button>
             <button class="tab-btn" onclick="showTab('testing')">🧪 Testing</button>
             <button class="tab-btn" onclick="showTab('training')">🎓 Training</button>
             <button class="tab-btn" onclick="showTab('maintenance')">🔧 Maintenance</button>
         </div>
+
         <div id="master" class="tab-content active">
             <div class="card">
                 <h2>📋 Project Master Plan</h2>
@@ -164,6 +165,8 @@
                         <option value="Delayed">Delayed</option>
                     </select>
                 </div>
+                <div id="masterLoading" class="loading">⏳ Loading data from Google Sheets...</div>
+                <div id="masterError" class="error-msg" style="display:none;"></div>
                 <div style="overflow-x: auto;">
                     <table id="masterTable">
                         <thead>
@@ -174,18 +177,11 @@
                 </div>
             </div>
         </div>
-        <div id="gantt" class="tab-content">
-            <div class="card">
-                <h2>📊 Gantt Chart Timeline</h2>
-                <div class="gantt-chart" id="ganttChart"></div>
-            </div>
-        </div>
+
         <div id="boq" class="tab-content">
             <div class="card">
                 <h2>📦 Bill of Quantity (BOQ) - CCTV System</h2>
-                <div class="filters">
-                    <input type="text" class="search-box" placeholder="🔍 Search devices..." onkeyup="filterTable('boqCCTV', this.value)">
-                </div>
+                <div id="boqCCTVLoading" class="loading">⏳ Loading...</div>
                 <table id="boqCCTV">
                     <thead>
                         <tr><th>No</th><th>Kategori</th><th>Device/Item</th><th>Brand</th><th>Model</th><th>Qty</th><th>Unit</th><th>Price/unit</th><th>Total</th><th>Specification</th><th>Location</th></tr>
@@ -195,6 +191,7 @@
             </div>
             <div class="card">
                 <h2>📦 Bill of Quantity (BOQ) - Access Control</h2>
+                <div id="boqAccessLoading" class="loading">⏳ Loading...</div>
                 <table id="boqAccess">
                     <thead>
                         <tr><th>No</th><th>Kategori</th><th>Device/Item</th><th>Brand</th><th>Model</th><th>Qty</th><th>Unit</th><th>Price/unit</th><th>Total</th><th>Specification</th><th>Location</th></tr>
@@ -204,6 +201,7 @@
             </div>
             <div class="card">
                 <h2>📦 Material & Cabling</h2>
+                <div id="materialLoading" class="loading">⏳ Loading...</div>
                 <table id="boqMaterial">
                     <thead>
                         <tr><th>No</th><th>Kategori</th><th>Item</th><th>Brand</th><th>Model</th><th>Qty</th><th>Unit</th><th>Price/unit</th><th>Total</th><th>Specification</th></tr>
@@ -212,41 +210,18 @@
                 </table>
             </div>
         </div>
+
         <div id="risk" class="tab-content">
             <div class="card">
-                <h2>⚠️ Risk Matrix</h2>
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <div style="display: inline-block; text-align: center;">
-                        <div style="margin-bottom: 5px; font-weight: bold;">Impact →</div>
-                        <div style="display: flex; align-items: center;">
-                            <div style="writing-mode: vertical-rl; transform: rotate(180deg); font-weight: bold; margin-right: 10px;">Probability →</div>
-                            <div class="risk-matrix">
-                                <div class="risk-cell risk-low">1</div><div class="risk-cell risk-low">2</div><div class="risk-cell risk-low">3</div><div class="risk-cell risk-medium">4</div><div class="risk-cell risk-medium">5</div>
-                                <div class="risk-cell risk-low">2</div><div class="risk-cell risk-low">4</div><div class="risk-cell risk-medium">6</div><div class="risk-cell risk-medium">8</div><div class="risk-cell risk-high">10</div>
-                                <div class="risk-cell risk-low">3</div><div class="risk-cell risk-medium">6</div><div class="risk-cell risk-medium">9</div><div class="risk-cell risk-high">12</div><div class="risk-cell risk-high">15</div>
-                                <div class="risk-cell risk-medium">4</div><div class="risk-cell risk-medium">8</div><div class="risk-cell risk-high">12</div><div class="risk-cell risk-high">16</div><div class="risk-cell risk-high">20</div>
-                                <div class="risk-cell risk-medium">5</div><div class="risk-cell risk-high">10</div><div class="risk-cell risk-high">15</div><div class="risk-cell risk-high">20</div><div class="risk-cell risk-high">25</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
                 <h2>⚠️ Risk Register</h2>
+                <div id="riskLoading" class="loading">⏳ Loading...</div>
                 <div id="riskList"></div>
             </div>
         </div>
+
         <div id="testing" class="tab-content">
             <div class="card">
                 <h2>🧪 Testing & Commissioning Checklist</h2>
-                <div class="filters">
-                    <select id="filterTestCategory" onchange="filterTestCategory()">
-                        <option value="">All Categories</option>
-                        <option value="CCTV">CCTV Testing</option>
-                        <option value="Access">Access Control Testing</option>
-                        <option value="Integration">Integration Testing</option>
-                    </select>
-                </div>
                 <table id="testTable">
                     <thead>
                         <tr><th>No</th><th>Category</th><th>Test Item</th><th>Method</th><th>Criteria</th><th>Result</th><th>Pass/Fail</th><th>Tester</th><th>Date</th><th>Notes</th></tr>
@@ -255,6 +230,7 @@
                 </table>
             </div>
         </div>
+
         <div id="training" class="tab-content">
             <div class="card">
                 <h2>🎓 Training Plan</h2>
@@ -266,6 +242,7 @@
                 </table>
             </div>
         </div>
+
         <div id="maintenance" class="tab-content">
             <div class="card">
                 <h2>🔧 Maintenance Schedule (1st Year)</h2>
@@ -278,8 +255,36 @@
             </div>
         </div>
     </div>
+
 <script>
-const masterData = [
+// ============================================
+// GOOGLE SHEETS CONFIGURATION
+// ============================================
+// Ganti dengan Spreadsheet ID Anda
+// Cara mendapatkan: dari URL Google Sheets
+// Contoh: https://docs.google.com/spreadsheets/d/1ABC123xyz/edit
+// Spreadsheet ID = 1ABC123xyz
+
+let SPREADSHEET_ID = localStorage.getItem('gsheets_spreadsheet_id') || '';
+
+// GID untuk setiap sheet (dari URL publish)
+const SHEET_GIDS = {
+    masterPlan: '0',      // Sheet MasterPlan
+    boqCCTV: '1',         // Sheet BOQ_CCTV
+    boqAccess: '2',       // Sheet BOQ_Access
+    material: '3',        // Sheet Material
+    risk: '4'             // Sheet Risk
+};
+
+function getSheetUrl(gid) {
+    if (!SPREADSHEET_ID) return null;
+    return `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/pub?gid=${gid}&single=true&output=csv`;
+}
+
+// ============================================
+// LOCAL FALLBACK DATA
+// ============================================
+const localMasterData = [
     { phase: "Inisiasi", no: 1, task: "Site survey & assessment lokasi", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Project Manager", deliverable: "Site Survey Report", notes: "" },
     { phase: "Inisiasi", no: 2, task: "Identifikasi kebutuhan security", start: "", end: "", duration: 1, status: "Not Started", percent: 0, pic: "Security Consultant", deliverable: "Requirement Document", notes: "" },
     { phase: "Inisiasi", no: 3, task: "Analisis risiko & threat assessment", start: "", end: "", duration: 2, status: "Not Started", percent: 0, pic: "Security Consultant", deliverable: "Risk Analysis Report", notes: "" },
@@ -346,7 +351,7 @@ const masterData = [
     { phase: "Penutupan", no: 64, task: "Archiving project document", start: "", end: "", duration: 1, status: "Not Started", percent: 0, pic: "Project Manager", deliverable: "Archive", notes: "" }
 ];
 
-const boqCCTVData = [
+const localBOQCCTV = [
     { no: 1, category: "CCTV", item: "IP Dome Camera 4MP", brand: "Hikvision", model: "DS-2CD2143G2-I", qty: 8, unit: "pcs", price: 2500000, spec: "4MP, IR 30m, WDR, IP67", location: "Lobby, koridor" },
     { no: 2, category: "CCTV", item: "IP Bullet Camera 4MP", brand: "Hikvision", model: "DS-2CD2043G2-I", qty: 12, unit: "pcs", price: 2300000, spec: "4MP, IR 50m, WDR, IP67", location: "Perimeter, parkir" },
     { no: 3, category: "CCTV", item: "PTZ Camera 2MP", brand: "Hikvision", model: "DS-2DE4225IW-DE", qty: 2, unit: "pcs", price: 8500000, spec: "25x optical zoom, IR 100m", location: "Gate utama" },
@@ -356,7 +361,7 @@ const boqCCTVData = [
     { no: 7, category: "CCTV", item: "Monitor 32 LED", brand: "Samsung", model: "S32A600", qty: 2, unit: "unit", price: 4500000, spec: "4K, HDMI, VESA", location: "Security room" }
 ];
 
-const boqAccessData = [
+const localBOQAccess = [
     { no: 1, category: "Access", item: "Card Reader (Mifare)", brand: "HID", model: "iCLASS SE R40", qty: 15, unit: "pcs", price: 1800000, spec: "13.56MHz, Wiegand", location: "Setiap pintu" },
     { no: 2, category: "Access", item: "Fingerprint Reader", brand: "ZKTeco", model: "F18", qty: 5, unit: "pcs", price: 2200000, spec: "500 DPI, 3000 template", location: "Pintu utama" },
     { no: 3, category: "Access", item: "Door Controller 2-Door", brand: "ZKTeco", model: "C3-200", qty: 8, unit: "unit", price: 3500000, spec: "2 door, TCP/IP, Wiegand", location: "Server room" },
@@ -369,7 +374,7 @@ const boqAccessData = [
     { no: 10, category: "Access", item: "Door Contact Sensor", brand: "Honeywell", model: "7939WG", qty: 15, unit: "pcs", price: 120000, spec: "Recessed, magnetic", location: "Setiap pintu" }
 ];
 
-const materialData = [
+const localMaterial = [
     { no: 1, category: "Kabel", item: "UTP Cat 6", brand: "Belden", model: "1583A", qty: 2000, unit: "meter", price: 8500, spec: "23 AWG, solid, PVC" },
     { no: 2, category: "Kabel", item: "Power Cable 2x1.5mm", brand: "Supreme", model: "NYM 2x1.5", qty: 1500, unit: "meter", price: 6500, spec: "1.5mm, 300/500V" },
     { no: 3, category: "Kabel", item: "Control Cable 4x0.5mm", brand: "Belden", model: "8723", qty: 800, unit: "meter", price: 12000, spec: "4 pair, shielded" },
@@ -380,7 +385,7 @@ const materialData = [
     { no: 8, category: "Material", item: "Patch Panel 24 Port", brand: "Panduit", model: "CPPL24WBLY", qty: 2, unit: "unit", price: 1800000, spec: "Cat 6, 1U" }
 ];
 
-const riskData = [
+const localRisk = [
     { no: 1, risk: "Delay pengiriman device dari supplier", probability: 3, impact: 4, score: 12, level: "High", mitigation: "PO early, buffer stock, vendor backup", owner: "Procurement", status: "Open" },
     { no: 2, risk: "Kabel tidak cukup / kurang panjang", probability: 2, impact: 3, score: 6, level: "Medium", mitigation: "Site survey detail, BOQ +10% buffer", owner: "Technical", status: "Open" },
     { no: 3, risk: "Konflik dengan interior/furniture", probability: 3, impact: 3, score: 9, level: "Medium", mitigation: "Koordinasi dengan contractor interior", owner: "Project Manager", status: "Open" },
@@ -447,85 +452,290 @@ const maintData = [
     { no: 12, activity: "Review user access rights", frequency: "6 Bulan", nextDate: "", pic: "HR", status: "Not Started", notes: "Hapus user resign, update level" }
 ];
 
+// ============================================
+// GOOGLE SHEETS FUNCTIONS
+// ============================================
+
+function saveConfig() {
+    const id = document.getElementById('spreadsheetId').value.trim();
+    if (!id) {
+        showConfigStatus('❌ Spreadsheet ID tidak boleh kosong!', 'error');
+        return;
+    }
+    SPREADSHEET_ID = id;
+    localStorage.setItem('gsheets_spreadsheet_id', id);
+    showConfigStatus('✅ Config saved! Testing connection...', 'success');
+    testConnection();
+}
+
+function useLocalData() {
+    SPREADSHEET_ID = '';
+    localStorage.removeItem('gsheets_spreadsheet_id');
+    document.getElementById('spreadsheetId').value = '';
+    showConfigStatus('📂 Menggunakan data lokal', 'success');
+    loadAllData();
+}
+
+function showConfigStatus(msg, type) {
+    const el = document.getElementById('configStatus');
+    el.innerHTML = '<div class="' + (type === 'error' ? 'error-msg' : 'success-msg') + '">' + msg + '</div>';
+}
+
+async function testConnection() {
+    if (!SPREADSHEET_ID) {
+        showConfigStatus('❌ Spreadsheet ID belum diisi!', 'error');
+        return;
+    }
+
+    try {
+        const url = getSheetUrl(SHEET_GIDS.masterPlan);
+        const response = await fetch(url);
+        if (response.ok) {
+            showConfigStatus('✅ Koneksi berhasil! Data loaded.', 'success');
+            loadAllData();
+        } else {
+            showConfigStatus('❌ Gagal terhubung. Cek Spreadsheet ID dan pastikan sudah di-publish.', 'error');
+        }
+    } catch (e) {
+        showConfigStatus('❌ Error: ' + e.message, 'error');
+    }
+}
+
+async function fetchSheet(gid) {
+    const url = getSheetUrl(gid);
+    if (!url) return null;
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        return await response.text();
+    } catch (e) {
+        console.error('Fetch error:', e);
+        return null;
+    }
+}
+
+function parseCSV(csvText) {
+    const lines = csvText.trim().split('\n');
+    const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+    const data = [];
+
+    for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(',').map(v => v.trim().replace(/^"|"$/g, ''));
+        const obj = {};
+        headers.forEach((h, idx) => {
+            obj[h] = values[idx] || '';
+        });
+        data.push(obj);
+    }
+    return data;
+}
+
+// ============================================
+// LOAD ALL DATA
+// ============================================
+
+async function loadAllData() {
+    if (SPREADSHEET_ID) {
+        await loadMasterFromSheets();
+        await loadBOQCCTVFromSheets();
+        await loadBOQAccessFromSheets();
+        await loadMaterialFromSheets();
+        await loadRiskFromSheets();
+    } else {
+        renderMasterTable(localMasterData);
+        renderBOQCCTV(localBOQCCTV);
+        renderBOQAccess(localBOQAccess);
+        renderMaterial(localMaterial);
+        renderRisk(localRisk);
+    }
+    renderTesting();
+    renderTraining();
+    renderMaintenance();
+}
+
+async function loadMasterFromSheets() {
+    document.getElementById('masterLoading').style.display = 'block';
+    document.getElementById('masterError').style.display = 'none';
+
+    const csv = await fetchSheet(SHEET_GIDS.masterPlan);
+    if (csv) {
+        const data = parseCSV(csv);
+        const mapped = data.map(row => ({
+            phase: row.Phase || row.phase || '',
+            no: parseInt(row.No || row.no || 0),
+            task: row.Task || row.task || '',
+            start: row.Start || row.start || '',
+            end: row.End || row.end || '',
+            duration: parseInt(row.Duration || row.duration || 0),
+            status: row.Status || row.status || 'Not Started',
+            percent: parseInt(row.Percent || row.percent || 0),
+            pic: row.PIC || row.pic || '',
+            deliverable: row.Deliverable || row.deliverable || '',
+            notes: row.Notes || row.notes || ''
+        }));
+        renderMasterTable(mapped);
+        document.getElementById('masterLoading').style.display = 'none';
+    } else {
+        document.getElementById('masterLoading').style.display = 'none';
+        document.getElementById('masterError').style.display = 'block';
+        document.getElementById('masterError').textContent = '❌ Gagal load dari Google Sheets. Menggunakan data lokal.';
+        renderMasterTable(localMasterData);
+    }
+}
+
+async function loadBOQCCTVFromSheets() {
+    document.getElementById('boqCCTVLoading').style.display = 'block';
+    const csv = await fetchSheet(SHEET_GIDS.boqCCTV);
+    if (csv) {
+        const data = parseCSV(csv);
+        const mapped = data.map(row => ({
+            no: parseInt(row.No || row.no || 0),
+            category: row.Kategori || row.category || '',
+            item: row.Item || row.item || '',
+            brand: row.Brand || row.brand || '',
+            model: row.Model || row.model || '',
+            qty: parseInt(row.Qty || row.qty || 0),
+            unit: row.Unit || row.unit || '',
+            price: parseInt(row.Price || row.price || 0),
+            spec: row.Spec || row.spec || '',
+            location: row.Location || row.location || ''
+        }));
+        renderBOQCCTV(mapped);
+        document.getElementById('boqCCTVLoading').style.display = 'none';
+    } else {
+        document.getElementById('boqCCTVLoading').style.display = 'none';
+        renderBOQCCTV(localBOQCCTV);
+    }
+}
+
+async function loadBOQAccessFromSheets() {
+    document.getElementById('boqAccessLoading').style.display = 'block';
+    const csv = await fetchSheet(SHEET_GIDS.boqAccess);
+    if (csv) {
+        const data = parseCSV(csv);
+        const mapped = data.map(row => ({
+            no: parseInt(row.No || row.no || 0),
+            category: row.Kategori || row.category || '',
+            item: row.Item || row.item || '',
+            brand: row.Brand || row.brand || '',
+            model: row.Model || row.model || '',
+            qty: parseInt(row.Qty || row.qty || 0),
+            unit: row.Unit || row.unit || '',
+            price: parseInt(row.Price || row.price || 0),
+            spec: row.Spec || row.spec || '',
+            location: row.Location || row.location || ''
+        }));
+        renderBOQAccess(mapped);
+        document.getElementById('boqAccessLoading').style.display = 'none';
+    } else {
+        document.getElementById('boqAccessLoading').style.display = 'none';
+        renderBOQAccess(localBOQAccess);
+    }
+}
+
+async function loadMaterialFromSheets() {
+    document.getElementById('materialLoading').style.display = 'block';
+    const csv = await fetchSheet(SHEET_GIDS.material);
+    if (csv) {
+        const data = parseCSV(csv);
+        const mapped = data.map(row => ({
+            no: parseInt(row.No || row.no || 0),
+            category: row.Kategori || row.category || '',
+            item: row.Item || row.item || '',
+            brand: row.Brand || row.brand || '',
+            model: row.Model || row.model || '',
+            qty: parseInt(row.Qty || row.qty || 0),
+            unit: row.Unit || row.unit || '',
+            price: parseInt(row.Price || row.price || 0),
+            spec: row.Spec || row.spec || ''
+        }));
+        renderMaterial(mapped);
+        document.getElementById('materialLoading').style.display = 'none';
+    } else {
+        document.getElementById('materialLoading').style.display = 'none';
+        renderMaterial(localMaterial);
+    }
+}
+
+async function loadRiskFromSheets() {
+    document.getElementById('riskLoading').style.display = 'block';
+    const csv = await fetchSheet(SHEET_GIDS.risk);
+    if (csv) {
+        const data = parseCSV(csv);
+        const mapped = data.map(row => ({
+            no: parseInt(row.No || row.no || 0),
+            risk: row.Risk || row.risk || '',
+            probability: parseInt(row.Probability || row.probability || 0),
+            impact: parseInt(row.Impact || row.impact || 0),
+            score: parseInt(row.Score || row.score || 0),
+            level: row.Level || row.level || 'Medium',
+            mitigation: row.Mitigation || row.mitigation || '',
+            owner: row.Owner || row.owner || '',
+            status: row.Status || row.status || 'Open'
+        }));
+        renderRisk(mapped);
+        document.getElementById('riskLoading').style.display = 'none';
+    } else {
+        document.getElementById('riskLoading').style.display = 'none';
+        renderRisk(localRisk);
+    }
+}
+
+// ============================================
+// RENDER FUNCTIONS
+// ============================================
+
 function showTab(tabName) {
     document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
     document.getElementById(tabName).classList.add('active');
     event.target.classList.add('active');
-    if (tabName === 'gantt') renderGantt();
 }
 
 function getStatusBadge(status) {
-    return '<span class="status-badge status-' + status.toLowerCase().replace(' ', '-') + '">' + status + '</span>';
+    return '<span class="status-badge status-' + status.toLowerCase().replace(/\s/g, '-') + '">' + status + '</span>';
 }
 
-function renderMasterTable() {
+function renderMasterTable(data) {
     const tbody = document.getElementById('masterBody');
     let currentPhase = '';
     let html = '';
-    masterData.forEach(item => {
-        if (item.phase !== currentPhase) {
+    data.forEach(item => {
+        if (item.phase && item.phase !== currentPhase) {
             currentPhase = item.phase;
             html += '<tr class="phase-header"><td colspan="11">' + item.phase + '</td></tr>';
         }
         html += '<tr>' +
             '<td>' + item.no + '</td>' +
-            '<td>' + item.phase + '</td>' +
+            '<td>' + (item.phase || '') + '</td>' +
             '<td>' + item.task + '</td>' +
-            '<td><input type="date" class="date-input" value="' + item.start + '" onchange="updateData(' + item.no + ', ' + "'" + 'start' + "'" + ', this.value)"></td>' +
-            '<td><input type="date" class="date-input" value="' + item.end + '" onchange="updateData(' + item.no + ', ' + "'" + 'end' + "'" + ', this.value)"></td>' +
+            '<td><input type="date" class="date-input" value="' + (item.start || '') + '" onchange="updateLocalData(' + item.no + ', ' + "'" + 'start' + "'" + ', this.value)"></td>' +
+            '<td><input type="date" class="date-input" value="' + (item.end || '') + '" onchange="updateLocalData(' + item.no + ', ' + "'" + 'end' + "'" + ', this.value)"></td>' +
             '<td>' + item.duration + '</td>' +
-            '<td>' +
-                '<select class="status-select" onchange="updateStatus(' + item.no + ', this.value)">' +
-                    '<option value="Not Started"' + (item.status === 'Not Started' ? ' selected' : '') + '>Not Started</option>' +
-                    '<option value="In Progress"' + (item.status === 'In Progress' ? ' selected' : '') + '>In Progress</option>' +
-                    '<option value="Completed"' + (item.status === 'Completed' ? ' selected' : '') + '>Completed</option>' +
-                    '<option value="Delayed"' + (item.status === 'Delayed' ? ' selected' : '') + '>Delayed</option>' +
-                '</select>' +
-            '</td>' +
-            '<td><input type="number" class="percentage-input" value="' + item.percent + '" min="0" max="100" onchange="updatePercent(' + item.no + ', this.value)"></td>' +
+            '<td>' + getStatusBadge(item.status) + '</td>' +
+            '<td>' + item.percent + '%</td>' +
             '<td>' + item.pic + '</td>' +
             '<td>' + item.deliverable + '</td>' +
-            '<td><input type="text" class="note-input" value="' + item.notes + '" placeholder="Notes..." onchange="updateData(' + item.no + ', ' + "'" + 'notes' + "'" + ', this.value)"></td>' +
+            '<td><input type="text" class="note-input" value="' + (item.notes || '') + '" placeholder="Notes..."></td>' +
         '</tr>';
     });
     tbody.innerHTML = html;
-    updateStats();
+    updateStats(data);
 }
 
-function updateData(no, field, value) {
-    const item = masterData.find(d => d.no === no);
-    if (item) item[field] = value;
+function updateLocalData(no, field, value) {
+    // Update local storage untuk data yang diedit
+    const key = 'master_' + no + '_' + field;
+    localStorage.setItem(key, value);
 }
 
-function updateStatus(no, status) {
-    const item = masterData.find(d => d.no === no);
-    if (item) {
-        item.status = status;
-        if (status === 'Completed') item.percent = 100;
-        else if (status === 'Not Started') item.percent = 0;
-        else if (status === 'In Progress' && item.percent === 0) item.percent = 50;
-        renderMasterTable();
-    }
-}
-
-function updatePercent(no, percent) {
-    const item = masterData.find(d => d.no === no);
-    if (item) {
-        item.percent = parseInt(percent);
-        if (item.percent === 100) item.status = 'Completed';
-        else if (item.percent === 0) item.status = 'Not Started';
-        else if (item.percent > 0 && item.percent < 100) item.status = 'In Progress';
-        renderMasterTable();
-    }
-}
-
-function updateStats() {
-    const total = masterData.length;
-    const completed = masterData.filter(d => d.status === 'Completed').length;
-    const inProgress = masterData.filter(d => d.status === 'In Progress').length;
-    const delayed = masterData.filter(d => d.status === 'Delayed').length;
-    const totalPercent = masterData.reduce((sum, d) => sum + d.percent, 0) / total;
+function updateStats(data) {
+    const total = data.length;
+    const completed = data.filter(d => d.status === 'Completed').length;
+    const inProgress = data.filter(d => d.status === 'In Progress').length;
+    const delayed = data.filter(d => d.status === 'Delayed').length;
+    const totalPercent = data.reduce((sum, d) => sum + (d.percent || 0), 0) / total;
 
     document.getElementById('totalTasks').textContent = total;
     document.getElementById('completedTasks').textContent = completed;
@@ -537,15 +747,153 @@ function updateStats() {
     document.getElementById('delayedBar').style.width = (delayed/total*100) + '%';
     document.getElementById('budgetUsed').textContent = Math.round(totalPercent) + '%';
     document.getElementById('budgetBar').style.width = totalPercent + '%';
+}
 
-    const hasDates = masterData.some(d => d.end !== '');
-    if (hasDates) {
-        const dates = masterData.filter(d => d.end !== '').map(d => new Date(d.end));
-        const maxDate = new Date(Math.max.apply(null, dates));
-        const today = new Date();
-        const diff = Math.ceil((maxDate - today) / (1000 * 60 * 60 * 24));
-        document.getElementById('daysRemaining').textContent = diff > 0 ? diff : 0;
-    }
+function renderBOQCCTV(data) {
+    let html = '';
+    let total = 0;
+    data.forEach(item => {
+        const itemTotal = (item.qty || 0) * (item.price || 0);
+        total += itemTotal;
+        html += '<tr>' +
+            '<td>' + item.no + '</td>' +
+            '<td>' + item.category + '</td>' +
+            '<td>' + item.item + '</td>' +
+            '<td>' + item.brand + '</td>' +
+            '<td>' + item.model + '</td>' +
+            '<td>' + item.qty + '</td>' +
+            '<td>' + item.unit + '</td>' +
+            '<td>Rp ' + (item.price || 0).toLocaleString() + '</td>' +
+            '<td>Rp ' + itemTotal.toLocaleString() + '</td>' +
+            '<td>' + item.spec + '</td>' +
+            '<td>' + item.location + '</td>' +
+        '</tr>';
+    });
+    html += '<tr style="font-weight:bold;background:#e3f2fd;"><td colspan="8">TOTAL CCTV SYSTEM</td><td>Rp ' + total.toLocaleString() + '</td><td colspan="2"></td></tr>';
+    document.getElementById('boqCCTVBody').innerHTML = html;
+}
+
+function renderBOQAccess(data) {
+    let html = '';
+    let total = 0;
+    data.forEach(item => {
+        const itemTotal = (item.qty || 0) * (item.price || 0);
+        total += itemTotal;
+        html += '<tr>' +
+            '<td>' + item.no + '</td>' +
+            '<td>' + item.category + '</td>' +
+            '<td>' + item.item + '</td>' +
+            '<td>' + item.brand + '</td>' +
+            '<td>' + item.model + '</td>' +
+            '<td>' + item.qty + '</td>' +
+            '<td>' + item.unit + '</td>' +
+            '<td>Rp ' + (item.price || 0).toLocaleString() + '</td>' +
+            '<td>Rp ' + itemTotal.toLocaleString() + '</td>' +
+            '<td>' + item.spec + '</td>' +
+            '<td>' + item.location + '</td>' +
+        '</tr>';
+    });
+    html += '<tr style="font-weight:bold;background:#e3f2fd;"><td colspan="8">TOTAL ACCESS CONTROL</td><td>Rp ' + total.toLocaleString() + '</td><td colspan="2"></td></tr>';
+    document.getElementById('boqAccessBody').innerHTML = html;
+}
+
+function renderMaterial(data) {
+    let html = '';
+    let total = 0;
+    data.forEach(item => {
+        const itemTotal = (item.qty || 0) * (item.price || 0);
+        total += itemTotal;
+        html += '<tr>' +
+            '<td>' + item.no + '</td>' +
+            '<td>' + item.category + '</td>' +
+            '<td>' + item.item + '</td>' +
+            '<td>' + item.brand + '</td>' +
+            '<td>' + item.model + '</td>' +
+            '<td>' + item.qty + '</td>' +
+            '<td>' + item.unit + '</td>' +
+            '<td>Rp ' + (item.price || 0).toLocaleString() + '</td>' +
+            '<td>Rp ' + itemTotal.toLocaleString() + '</td>' +
+            '<td>' + item.spec + '</td>' +
+        '</tr>';
+    });
+    html += '<tr style="font-weight:bold;background:#e3f2fd;"><td colspan="8">TOTAL MATERIAL & CABLING</td><td>Rp ' + total.toLocaleString() + '</td><td></td></tr>';
+    document.getElementById('boqMaterialBody').innerHTML = html;
+}
+
+function renderRisk(data) {
+    let html = '';
+    data.forEach(item => {
+        html += '<div class="risk-item ' + (item.level || 'medium').toLowerCase() + '">' +
+            '<div>' +
+                '<strong>#' + item.no + ' ' + item.risk + '</strong><br>' +
+                '<small>Probability: ' + item.probability + ' | Impact: ' + item.impact + ' | Score: ' + item.score + ' | Level: ' + item.level + '</small><br>' +
+                '<small><strong>Mitigation:</strong> ' + item.mitigation + '</small><br>' +
+                '<small><strong>Owner:</strong> ' + item.owner + ' | <strong>Status:</strong> ' + item.status + '</small>' +
+            '</div>' +
+            '<div style="font-size: 2em;">' + (item.level === 'High' ? '🔴' : item.level === 'Medium' ? '🟡' : '🟢') + '</div>' +
+        '</div>';
+    });
+    document.getElementById('riskList').innerHTML = html;
+}
+
+function renderTesting() {
+    let html = '';
+    testData.forEach(item => {
+        html += '<tr>' +
+            '<td>' + item.no + '</td>' +
+            '<td>' + item.category + '</td>' +
+            '<td>' + item.item + '</td>' +
+            '<td>' + item.method + '</td>' +
+            '<td>' + item.criteria + '</td>' +
+            '<td><input type="text" class="note-input" value="' + item.result + '" placeholder="Result..."></td>' +
+            '<td>' +
+                '<select class="status-select">' +
+                    '<option value=""' + (item.pass === '' ? ' selected' : '') + '>--</option>' +
+                    '<option value="Pass"' + (item.pass === 'Pass' ? ' selected' : '') + '>Pass</option>' +
+                    '<option value="Fail"' + (item.pass === 'Fail' ? ' selected' : '') + '>Fail</option>' +
+                '</select>' +
+            '</td>' +
+            '<td><input type="text" class="note-input" value="' + item.tester + '" placeholder="Tester..."></td>' +
+            '<td><input type="date" class="date-input" value="' + item.date + '"></td>' +
+            '<td><input type="text" class="note-input" value="' + item.notes + '" placeholder="Notes..."></td>' +
+        '</tr>';
+    });
+    document.getElementById('testBody').innerHTML = html;
+}
+
+function renderTraining() {
+    let html = '';
+    trainingData.forEach(item => {
+        html += '<tr>' +
+            '<td>' + item.no + '</td>' +
+            '<td>' + item.topic + '</td>' +
+            '<td>' + item.audience + '</td>' +
+            '<td>' + item.duration + '</td>' +
+            '<td>' + item.method + '</td>' +
+            '<td>' + item.material + '</td>' +
+            '<td>' + item.trainer + '</td>' +
+            '<td><input type="date" class="date-input" value="' + item.date + '"></td>' +
+            '<td>' + getStatusBadge(item.status) + '</td>' +
+            '<td><input type="text" class="note-input" value="' + item.attendees + '" placeholder="Attendees..."></td>' +
+        '</tr>';
+    });
+    document.getElementById('trainingBody').innerHTML = html;
+}
+
+function renderMaintenance() {
+    let html = '';
+    maintData.forEach(item => {
+        html += '<tr>' +
+            '<td>' + item.no + '</td>' +
+            '<td>' + item.activity + '</td>' +
+            '<td>' + item.frequency + '</td>' +
+            '<td><input type="date" class="date-input" value="' + item.nextDate + '"></td>' +
+            '<td>' + item.pic + '</td>' +
+            '<td>' + getStatusBadge(item.status) + '</td>' +
+            '<td>' + item.notes + '</td>' +
+        '</tr>';
+    });
+    document.getElementById('maintBody').innerHTML = html;
 }
 
 function filterTable(tableId, searchTerm) {
@@ -586,227 +934,28 @@ function filterStatus() {
         if (!rows[i].classList.contains('phase-header')) {
             const cell = rows[i].getElementsByTagName('td')[6];
             if (cell) {
-                const select = cell.querySelector('select');
-                const val = select ? select.value : cell.textContent;
-                rows[i].style.display = status === '' || val === status ? '' : 'none';
+                const text = cell.textContent.trim();
+                rows[i].style.display = status === '' || text === status ? '' : 'none';
             }
         }
     }
 }
 
-function renderGantt() {
-    const container = document.getElementById('ganttChart');
-    let html = '<div style="margin-bottom: 10px; font-weight: bold;">Project Timeline (Weeks 1-20)</div>';
-
-    let currentPhase = '';
-    masterData.forEach(item => {
-        if (item.phase !== currentPhase) {
-            currentPhase = item.phase;
-            html += '<div style="font-weight: bold; margin: 15px 0 5px 0; color: #1e3c72;">' + item.phase + '</div>';
-        }
-
-        const startWeek = Math.floor((item.no - 1) / 3) + 1;
-        const width = item.duration * 5;
-        const left = (startWeek - 1) * 5;
-
-        html += '<div class="gantt-row">' +
-            '<div class="gantt-label">' + item.no + '. ' + item.task + '</div>' +
-            '<div class="gantt-timeline">' +
-                '<div class="gantt-bar ' + item.status.toLowerCase().replace(' ', '-') + '" style="left: ' + left + '%; width: ' + width + '%;">' + item.duration + 'd</div>' +
-            '</div>' +
-        '</div>';
-    });
-
-    container.innerHTML = html;
-}
-
-function renderBOQ() {
-    let html = '';
-    let totalCCTV = 0;
-    boqCCTVData.forEach(item => {
-        const total = item.qty * item.price;
-        totalCCTV += total;
-        html += '<tr>' +
-            '<td>' + item.no + '</td>' +
-            '<td>' + item.category + '</td>' +
-            '<td>' + item.item + '</td>' +
-            '<td>' + item.brand + '</td>' +
-            '<td>' + item.model + '</td>' +
-            '<td>' + item.qty + '</td>' +
-            '<td>' + item.unit + '</td>' +
-            '<td>Rp ' + item.price.toLocaleString() + '</td>' +
-            '<td>Rp ' + total.toLocaleString() + '</td>' +
-            '<td>' + item.spec + '</td>' +
-            '<td>' + item.location + '</td>' +
-        '</tr>';
-    });
-    html += '<tr style="font-weight: bold; background: #e3f2fd;"><td colspan="8">TOTAL CCTV SYSTEM</td><td>Rp ' + totalCCTV.toLocaleString() + '</td><td colspan="2"></td></tr>';
-    document.getElementById('boqCCTVBody').innerHTML = html;
-
-    html = '';
-    let totalAccess = 0;
-    boqAccessData.forEach(item => {
-        const total = item.qty * item.price;
-        totalAccess += total;
-        html += '<tr>' +
-            '<td>' + item.no + '</td>' +
-            '<td>' + item.category + '</td>' +
-            '<td>' + item.item + '</td>' +
-            '<td>' + item.brand + '</td>' +
-            '<td>' + item.model + '</td>' +
-            '<td>' + item.qty + '</td>' +
-            '<td>' + item.unit + '</td>' +
-            '<td>Rp ' + item.price.toLocaleString() + '</td>' +
-            '<td>Rp ' + total.toLocaleString() + '</td>' +
-            '<td>' + item.spec + '</td>' +
-            '<td>' + item.location + '</td>' +
-        '</tr>';
-    });
-    html += '<tr style="font-weight: bold; background: #e3f2fd;"><td colspan="8">TOTAL ACCESS CONTROL</td><td>Rp ' + totalAccess.toLocaleString() + '</td><td colspan="2"></td></tr>';
-    document.getElementById('boqAccessBody').innerHTML = html;
-
-    html = '';
-    let totalMaterial = 0;
-    materialData.forEach(item => {
-        const total = item.qty * item.price;
-        totalMaterial += total;
-        html += '<tr>' +
-            '<td>' + item.no + '</td>' +
-            '<td>' + item.category + '</td>' +
-            '<td>' + item.item + '</td>' +
-            '<td>' + item.brand + '</td>' +
-            '<td>' + item.model + '</td>' +
-            '<td>' + item.qty + '</td>' +
-            '<td>' + item.unit + '</td>' +
-            '<td>Rp ' + item.price.toLocaleString() + '</td>' +
-            '<td>Rp ' + total.toLocaleString() + '</td>' +
-            '<td>' + item.spec + '</td>' +
-        '</tr>';
-    });
-    html += '<tr style="font-weight: bold; background: #e3f2fd;"><td colspan="8">TOTAL MATERIAL & CABLING</td><td>Rp ' + totalMaterial.toLocaleString() + '</td><td></td></tr>';
-    html += '<tr style="font-weight: bold; background: #1e3c72; color: white;"><td colspan="8">GRAND TOTAL PROJECT</td><td>Rp ' + (totalCCTV + totalAccess + totalMaterial).toLocaleString() + '</td><td></td></tr>';
-    document.getElementById('boqMaterialBody').innerHTML = html;
-}
-
-function renderRisk() {
-    let html = '';
-    riskData.forEach(item => {
-        html += '<div class="risk-item ' + item.level.toLowerCase() + '">' +
-            '<div>' +
-                '<strong>#' + item.no + ' ' + item.risk + '</strong><br>' +
-                '<small>Probability: ' + item.probability + ' | Impact: ' + item.impact + ' | Score: ' + item.score + ' | Level: ' + item.level + '</small><br>' +
-                '<small><strong>Mitigation:</strong> ' + item.mitigation + '</small><br>' +
-                '<small><strong>Owner:</strong> ' + item.owner + ' | <strong>Status:</strong> ' + item.status + '</small>' +
-            '</div>' +
-            '<div style="font-size: 2em;">' + (item.level === 'High' ? '🔴' : item.level === 'Medium' ? '🟡' : '🟢') + '</div>' +
-        '</div>';
-    });
-    document.getElementById('riskList').innerHTML = html;
-}
-
-function renderTesting() {
-    let html = '';
-    testData.forEach(item => {
-        html += '<tr>' +
-            '<td>' + item.no + '</td>' +
-            '<td>' + item.category + '</td>' +
-            '<td>' + item.item + '</td>' +
-            '<td>' + item.method + '</td>' +
-            '<td>' + item.criteria + '</td>' +
-            '<td><input type="text" class="note-input" value="' + item.result + '" placeholder="Result..." onchange="updateTestData(' + item.no + ', ' + "'" + 'result' + "'" + ', this.value)"></td>' +
-            '<td>' +
-                '<select class="status-select" onchange="updateTestData(' + item.no + ', ' + "'" + 'pass' + "'" + ', this.value)">' +
-                    '<option value=""' + (item.pass === '' ? ' selected' : '') + '>--</option>' +
-                    '<option value="Pass"' + (item.pass === 'Pass' ? ' selected' : '') + '>✅ Pass</option>' +
-                    '<option value="Fail"' + (item.pass === 'Fail' ? ' selected' : '') + '>❌ Fail</option>' +
-                '</select>' +
-            '</td>' +
-            '<td><input type="text" class="note-input" value="' + item.tester + '" placeholder="Tester..." onchange="updateTestData(' + item.no + ', ' + "'" + 'tester' + "'" + ', this.value)"></td>' +
-            '<td><input type="date" class="date-input" value="' + item.date + '" onchange="updateTestData(' + item.no + ', ' + "'" + 'date' + "'" + ', this.value)"></td>' +
-            '<td><input type="text" class="note-input" value="' + item.notes + '" placeholder="Notes..." onchange="updateTestData(' + item.no + ', ' + "'" + 'notes' + "'" + ', this.value)"></td>' +
-        '</tr>';
-    });
-    document.getElementById('testBody').innerHTML = html;
-}
-
-function updateTestData(no, field, value) {
-    const item = testData.find(d => d.no === no);
-    if (item) item[field] = value;
-}
-
-function filterTestCategory() {
-    const cat = document.getElementById('filterTestCategory').value;
-    const rows = document.getElementById('testTable').getElementsByTagName('tr');
-    for (let i = 1; i < rows.length; i++) {
-        const cell = rows[i].getElementsByTagName('td')[1];
-        if (cell) {
-            rows[i].style.display = cat === '' || cell.textContent === cat ? '' : 'none';
-        }
-    }
-}
-
-function renderTraining() {
-    let html = '';
-    trainingData.forEach(item => {
-        html += '<tr>' +
-            '<td>' + item.no + '</td>' +
-            '<td>' + item.topic + '</td>' +
-            '<td>' + item.audience + '</td>' +
-            '<td>' + item.duration + '</td>' +
-            '<td>' + item.method + '</td>' +
-            '<td>' + item.material + '</td>' +
-            '<td>' + item.trainer + '</td>' +
-            '<td><input type="date" class="date-input" value="' + item.date + '" onchange="updateTrainingData(' + item.no + ', ' + "'" + 'date' + "'" + ', this.value)"></td>' +
-            '<td>' +
-                '<select class="status-select" onchange="updateTrainingData(' + item.no + ', ' + "'" + 'status' + "'" + ', this.value)">' +
-                    '<option value="Not Started"' + (item.status === 'Not Started' ? ' selected' : '') + '>Not Started</option>' +
-                    '<option value="Scheduled"' + (item.status === 'Scheduled' ? ' selected' : '') + '>Scheduled</option>' +
-                    '<option value="Completed"' + (item.status === 'Completed' ? ' selected' : '') + '>Completed</option>' +
-                '</select>' +
-            '</td>' +
-            '<td><input type="text" class="note-input" value="' + item.attendees + '" placeholder="Attendees..." onchange="updateTrainingData(' + item.no + ', ' + "'" + 'attendees' + "'" + ', this.value)"></td>' +
-        '</tr>';
-    });
-    document.getElementById('trainingBody').innerHTML = html;
-}
-
-function updateTrainingData(no, field, value) {
-    const item = trainingData.find(d => d.no === no);
-    if (item) item[field] = value;
-}
-
-function renderMaintenance() {
-    let html = '';
-    maintData.forEach(item => {
-        html += '<tr>' +
-            '<td>' + item.no + '</td>' +
-            '<td>' + item.activity + '</td>' +
-            '<td>' + item.frequency + '</td>' +
-            '<td><input type="date" class="date-input" value="' + item.nextDate + '" onchange="updateMaintData(' + item.no + ', ' + "'" + 'nextDate' + "'" + ', this.value)"></td>' +
-            '<td>' + item.pic + '</td>' +
-            '<td>' +
-                '<select class="status-select" onchange="updateMaintData(' + item.no + ', ' + "'" + 'status' + "'" + ', this.value)">' +
-                    '<option value="Not Started"' + (item.status === 'Not Started' ? ' selected' : '') + '>Not Started</option>' +
-                    '<option value="In Progress"' + (item.status === 'In Progress' ? ' selected' : '') + '>In Progress</option>' +
-                    '<option value="Completed"' + (item.status === 'Completed' ? ' selected' : '') + '>Completed</option>' +
-                '</select>' +
-            '</td>' +
-            '<td>' + item.notes + '</td>' +
-        '</tr>';
-    });
-    document.getElementById('maintBody').innerHTML = html;
-}
-
-function updateMaintData(no, field, value) {
-    const item = maintData.find(d => d.no === no);
-    if (item) item[field] = value;
-}
-
 function exportToCSV() {
     let csv = 'No,Fase,Task,Start Date,End Date,Duration,Status,Percent,PIC,Deliverable,Notes\n';
-    masterData.forEach(item => {
-        csv += item.no + ',' + item.phase + ',' + '"' + item.task + '"' + ',' + item.start + ',' + item.end + ',' + item.duration + ',' + item.status + ',' + item.percent + ',' + item.pic + ',' + '"' + item.deliverable + '"' + ',' + '"' + item.notes + '"' + '\n';
-    });
+    const rows = document.getElementById('masterTable').getElementsByTagName('tr');
+    for (let i = 1; i < rows.length; i++) {
+        if (!rows[i].classList.contains('phase-header')) {
+            const cells = rows[i].getElementsByTagName('td');
+            if (cells.length > 1) {
+                csv += cells[0].textContent + ',' + cells[1].textContent + ',' + '"' + cells[2].textContent + '"' + ',' + 
+                       (cells[3].querySelector('input') ? cells[3].querySelector('input').value : '') + ',' +
+                       (cells[4].querySelector('input') ? cells[4].querySelector('input').value : '') + ',' +
+                       cells[5].textContent + ',' + cells[6].textContent + ',' + cells[7].textContent + ',' +
+                       cells[8].textContent + ',' + '"' + cells[9].textContent + '"' + ',' + '"' + (cells[10].querySelector('input') ? cells[10].querySelector('input').value : '') + '"' + '\n';
+            }
+        }
+    }
 
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
@@ -819,84 +968,22 @@ function exportToCSV() {
     document.body.removeChild(a);
 }
 
-function saveData() {
-    const data = {
-        master: masterData,
-        test: testData,
-        training: trainingData,
-        maintenance: maintData
-    };
-    localStorage.setItem('securityProjectData', JSON.stringify(data));
-    alert('Data saved successfully!');
-}
+// ============================================
+// INITIALIZATION
+// ============================================
 
-function loadData() {
-    const saved = localStorage.getItem('securityProjectData');
-    if (saved) {
-        const data = JSON.parse(saved);
-        if (data.master) {
-            data.master.forEach((item, i) => {
-                if (masterData[i]) {
-                    masterData[i].start = item.start || '';
-                    masterData[i].end = item.end || '';
-                    masterData[i].status = item.status || 'Not Started';
-                    masterData[i].percent = item.percent || 0;
-                    masterData[i].notes = item.notes || '';
-                }
-            });
-        }
-        if (data.test) {
-            data.test.forEach((item, i) => {
-                if (testData[i]) {
-                    testData[i].result = item.result || '';
-                    testData[i].pass = item.pass || '';
-                    testData[i].tester = item.tester || '';
-                    testData[i].date = item.date || '';
-                    testData[i].notes = item.notes || '';
-                }
-            });
-        }
-        if (data.training) {
-            data.training.forEach((item, i) => {
-                if (trainingData[i]) {
-                    trainingData[i].date = item.date || '';
-                    trainingData[i].status = item.status || 'Not Started';
-                    trainingData[i].attendees = item.attendees || '';
-                }
-            });
-        }
-        if (data.maintenance) {
-            data.maintenance.forEach((item, i) => {
-                if (maintData[i]) {
-                    maintData[i].nextDate = item.nextDate || '';
-                    maintData[i].status = item.status || 'Not Started';
-                }
-            });
-        }
-        renderMasterTable();
-        renderTesting();
-        renderTraining();
-        renderMaintenance();
-        alert('Data loaded successfully!');
-    } else {
-        alert('No saved data found!');
+document.addEventListener('DOMContentLoaded', function() {
+    // Load saved config
+    const savedId = localStorage.getItem('gsheets_spreadsheet_id');
+    if (savedId) {
+        document.getElementById('spreadsheetId').value = savedId;
+        SPREADSHEET_ID = savedId;
+        showConfigStatus('✅ Spreadsheet ID loaded dari local storage', 'success');
     }
-}
 
-function resetData() {
-    if (confirm('Are you sure you want to reset all data? This cannot be undone.')) {
-        localStorage.removeItem('securityProjectData');
-        location.reload();
-    }
-}
-
-// Initialize
-renderMasterTable();
-renderBOQ();
-renderRisk();
-renderTesting();
-renderTraining();
-renderMaintenance();
+    // Load all data
+    loadAllData();
+});
 </script>
 </body>
 </html>
